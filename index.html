@@ -283,6 +283,149 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://github.com/gayTao/gayTao.github.io.git/2017/05/20/计算机网络小结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王套套">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/timg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桃树下的白手套">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/20/计算机网络小结/" itemprop="url">计算机网络小结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T15:51:26+08:00">
+                2017-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <table>
+<thead>
+<tr>
+<th></th>
+<th>数据单元</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>链路层</td>
+<td>帧</td>
+</tr>
+<tr>
+<td>网络层</td>
+<td>IP数据报</td>
+</tr>
+<tr>
+<td>网络层</td>
+<td>IP数据报</td>
+</tr>
+<tr>
+<td>链路层</td>
+<td>帧</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>IP 协议位于<strong>网络层</strong>，它是 TCP/IP 协议族中最为核心的协议，所有的 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。IP 协议提供的是<code>不可靠 、 无连接</code>的数据报传送服务。</p>
+<p><strong>不可靠</strong>（unreliable）：IP 协议不能保证数据报能成功地到达目的地，它仅提供传输服务。当发生某种错误时，IP 协议会丢弃该数据报。传输的可靠性全由上层协议来提供。</p>
+<p><strong>无连接</strong>（connectionless）：IP 协议对每个数据报的处理是相互独立的。这也说明， IP 数据报可以不按发送顺序接收。如果发送方向接收方发送了两个连续的数据报（先是 A，然后是 B），每个数据报可以选择不同的路线，因此 B 可能在 A 到达之前先到达</p>
+<hr>
+<p><strong>链路层</strong>的工作就是把网络层交下来的 IP 数据报 封装为 帧（frame）发送到链路上，以及把接收到的帧中的数据取出并上交给网络层<br><img src="http://i.imgur.com/ZYmU06j.png" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://github.com/gayTao/gayTao.github.io.git/2017/05/20/Git常见命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -807,7 +950,7 @@ $ git archive
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -815,6 +958,15 @@ $ git archive
 
           
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
           
 
         </nav>
