@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。  Workspace：工作区 Index / Stage：暂存区 Repository：仓库区（或本地仓库） Remote：远程仓库  ###1.新建代码库 # 在当前目录新建一个Git代码库 $ git init  # 新建一个目录，将其初始化为Git代码库 $ git init [project-name]  # 下载一个项目和它">
+<meta name="description" content="下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。  Workspace：工作区 Index / Stage：暂存区 Repository：仓库区（或本地仓库） Remote：远程仓库  1.新建代码库# 在当前目录新建一个Git代码库 $ git init  # 新建一个目录，将其初始化为Git代码库 $ git init [project-name]  # 下载一个项目和它的整个代">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git常见命令">
 <meta property="og:url" content="http://github.com/gayTao/gayTao.github.io.git/2017/05/20/Git常见命令/index.html">
 <meta property="og:site_name" content="桃树下的白手套">
-<meta property="og:description" content="下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。  Workspace：工作区 Index / Stage：暂存区 Repository：仓库区（或本地仓库） Remote：远程仓库  ###1.新建代码库 # 在当前目录新建一个Git代码库 $ git init  # 新建一个目录，将其初始化为Git代码库 $ git init [project-name]  # 下载一个项目和它">
+<meta property="og:description" content="下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。  Workspace：工作区 Index / Stage：暂存区 Repository：仓库区（或本地仓库） Remote：远程仓库  1.新建代码库# 在当前目录新建一个Git代码库 $ git init  # 新建一个目录，将其初始化为Git代码库 $ git init [project-name]  # 下载一个项目和它的整个代">
 <meta property="og:image" content="http://i.imgur.com/JpUlmoj.png">
-<meta property="og:updated_time" content="2017-05-20T07:14:00.241Z">
+<meta property="og:updated_time" content="2017-05-25T11:10:36.386Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git常见命令">
-<meta name="twitter:description" content="下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。  Workspace：工作区 Index / Stage：暂存区 Repository：仓库区（或本地仓库） Remote：远程仓库  ###1.新建代码库 # 在当前目录新建一个Git代码库 $ git init  # 新建一个目录，将其初始化为Git代码库 $ git init [project-name]  # 下载一个项目和它">
+<meta name="twitter:description" content="下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。  Workspace：工作区 Index / Stage：暂存区 Repository：仓库区（或本地仓库） Remote：远程仓库  1.新建代码库# 在当前目录新建一个Git代码库 $ git init  # 新建一个目录，将其初始化为Git代码库 $ git init [project-name]  # 下载一个项目和它的整个代">
 <meta name="twitter:image" content="http://i.imgur.com/JpUlmoj.png">
 
 
@@ -355,8 +355,7 @@
 <li>Repository：仓库区（或本地仓库）</li>
 <li>Remote：远程仓库</li>
 </ul>
-<p>###1.新建代码库</p>
-<pre><code># 在当前目录新建一个Git代码库
+<h3 id="1-新建代码库"><a href="#1-新建代码库" class="headerlink" title="1.新建代码库"></a>1.新建代码库</h3><pre><code># 在当前目录新建一个Git代码库
 $ git init
 
 # 新建一个目录，将其初始化为Git代码库
@@ -364,7 +363,7 @@ $ git init [project-name]
 
 # 下载一个项目和它的整个代码历史
 $ git clone [url]
-</code></pre><p>###2.配置<br>Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
+</code></pre><h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h3><p>Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
 <pre><code># 显示当前的Git配置
 $ git config --list
 
@@ -374,8 +373,7 @@ $ git config -e [--global]
 # 设置提交代码时的用户信息
 $ git config [--global] user.name &quot;[name]&quot;
 $ git config [--global] user.email &quot;[email address]&quot;
-</code></pre><p>###3.增加/删除文件</p>
-<pre><code># 添加指定文件到暂存区
+</code></pre><h3 id="3-增加-删除文件"><a href="#3-增加-删除文件" class="headerlink" title="3.增加/删除文件"></a>3.增加/删除文件</h3><pre><code># 添加指定文件到暂存区
 $ git add [file1] [file2] ...
 
 # 添加指定目录到暂存区，包括子目录
@@ -396,8 +394,7 @@ $ git rm --cached [file]
 
 # 改名文件，并且将这个改名放入暂存区
 $ git mv [file-original] [file-renamed]
-</code></pre><p>###4.代码提交</p>
-<pre><code># 提交暂存区到仓库区
+</code></pre><h3 id="4-代码提交"><a href="#4-代码提交" class="headerlink" title="4.代码提交"></a>4.代码提交</h3><pre><code># 提交暂存区到仓库区
 $ git commit -m [message]
 
 # 提交暂存区的指定文件到仓库区
@@ -415,8 +412,7 @@ $ git commit --amend -m [message]
 
 # 重做上一次commit，并包括指定文件的新变化
 $ git commit --amend [file1] [file2] ...
-</code></pre><p>###5.分支</p>
-<pre><code># 列出所有本地分支
+</code></pre><h3 id="5-分支"><a href="#5-分支" class="headerlink" title="5.分支"></a>5.分支</h3><pre><code># 列出所有本地分支
 $ git branch
 
 # 列出所有远程分支
@@ -458,8 +454,7 @@ $ git branch -d [branch-name]
 # 删除远程分支
 $ git push origin –delete [branch-name]
 $ git branch -dr [remote/branch]
-</code></pre><p>###6.标签</p>
-<pre><code># 列出所有tag
+</code></pre><h3 id="6-标签"><a href="#6-标签" class="headerlink" title="6.标签"></a>6.标签</h3><pre><code># 列出所有tag
 $ git tag
 
 # 新建一个tag在当前commit
@@ -485,8 +480,7 @@ $ git push [remote] --tags
 
 # 新建一个分支，指向某个tag
 $ git checkout -b [branch] [tag]
-</code></pre><p>###7.查看信息</p>
-<pre><code># 显示有变更的文件
+</code></pre><h3 id="7-查看信息"><a href="#7-查看信息" class="headerlink" title="7.查看信息"></a>7.查看信息</h3><pre><code># 显示有变更的文件
 $ git status
 
 # 显示当前分支的版本历史
@@ -546,8 +540,7 @@ $ git show [commit]:[filename]
 
 # 显示当前分支的最近几次提交
 $ git reflog
-</code></pre><p>###8.远程同步</p>
-<pre><code># 下载远程仓库的所有变动
+</code></pre><h3 id="8-远程同步"><a href="#8-远程同步" class="headerlink" title="8.远程同步"></a>8.远程同步</h3><pre><code># 下载远程仓库的所有变动
 $ git fetch [remote]
 
 # 显示所有远程仓库
@@ -570,8 +563,7 @@ $ git push [remote] --force
 
 # 推送所有分支到远程仓库
 $ git push [remote] --all
-</code></pre><p>###9.撤销</p>
-<pre><code># 恢复暂存区的指定文件到工作区
+</code></pre><h3 id="9-撤销"><a href="#9-撤销" class="headerlink" title="9.撤销"></a>9.撤销</h3><pre><code># 恢复暂存区的指定文件到工作区
 $ git checkout [file]
 
 # 恢复某个commit的指定文件到暂存区和工作区
@@ -602,8 +594,7 @@ $ git revert [commit]
 # 暂时将未提交的变化移除，稍后再移入
 $ git stash
 $ git stash pop
-</code></pre><p>###10.其他</p>
-<pre><code># 生成一个可供发布的压缩包
+</code></pre><h3 id="10-其他"><a href="#10-其他" class="headerlink" title="10.其他"></a>10.其他</h3><pre><code># 生成一个可供发布的压缩包
 $ git archive
 </code></pre>
       
@@ -700,8 +691,17 @@ $ git archive
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/timg.jpg"
@@ -754,6 +754,22 @@ $ git archive
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-新建代码库"><span class="nav-number">1.</span> <span class="nav-text">1.新建代码库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置"><span class="nav-number">2.</span> <span class="nav-text">2.配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-增加-删除文件"><span class="nav-number">3.</span> <span class="nav-text">3.增加/删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-代码提交"><span class="nav-number">4.</span> <span class="nav-text">4.代码提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-分支"><span class="nav-number">5.</span> <span class="nav-text">5.分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-标签"><span class="nav-number">6.</span> <span class="nav-text">6.标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-查看信息"><span class="nav-number">7.</span> <span class="nav-text">7.查看信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-远程同步"><span class="nav-number">8.</span> <span class="nav-text">8.远程同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-撤销"><span class="nav-number">9.</span> <span class="nav-text">9.撤销</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-其他"><span class="nav-number">10.</span> <span class="nav-text">10.其他</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

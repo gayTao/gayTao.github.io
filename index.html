@@ -464,8 +464,7 @@
         
           
             <p>（更新中)</p>
-<p>###1.重要快捷键###</p>
-<table>
+<h3 id="1-重要快捷键"><a href="#1-重要快捷键" class="headerlink" title="1.重要快捷键"></a>1.重要快捷键</h3><table>
 <thead>
 <tr>
 <th>按键</th>
@@ -519,18 +518,15 @@
 </tr>
 </tbody>
 </table>
-<p>###2.用户管理权限###</p>
-<p>######查看所属用户组并添加root权限<br> <code>groups &lt;用户名&gt;</code><br> <code>sudo usermod -G sudo &lt;用户名&gt;</code><br><img src="http://i.imgur.com/gBLI7WV.jpg" alt=""><br><img src="http://i.imgur.com/IwV6ubA.jpg" alt=""></p>
-<p>######为了方便管理和操作，我们添加一个用户 git ,并给他设置工作目录：</p>
-<pre><code>$ sudo useradd git
+<h3 id="2-用户管理权限"><a href="#2-用户管理权限" class="headerlink" title="2.用户管理权限"></a>2.用户管理权限</h3><h6 id="查看所属用户组并添加root权限"><a href="#查看所属用户组并添加root权限" class="headerlink" title="查看所属用户组并添加root权限"></a>查看所属用户组并添加root权限</h6><p> <code>groups &lt;用户名&gt;</code><br> <code>sudo usermod -G sudo &lt;用户名&gt;</code><br><img src="http://i.imgur.com/gBLI7WV.jpg" alt=""><br><img src="http://i.imgur.com/IwV6ubA.jpg" alt=""></p>
+<h6 id="为了方便管理和操作，我们添加一个用户-git-并给他设置工作目录："><a href="#为了方便管理和操作，我们添加一个用户-git-并给他设置工作目录：" class="headerlink" title="为了方便管理和操作，我们添加一个用户 git ,并给他设置工作目录："></a>为了方便管理和操作，我们添加一个用户 git ,并给他设置工作目录：</h6><pre><code>$ sudo useradd git
 $ sudo passwd  git  # 设置密码,为了方便操作，密码较为的简单
 $ sudo mkdir /home/git   # 设置 git 用户的工作目录
 $ sudo chown -R  git /home/git  #将工作目录的权限给git用户
 $ ssh-keygen -t rsa #生成密钥
 $ su git    # 切换用户到git,在本实验中用户权限的使用很重要
 $ su -l git   #git用户免密登录
-</code></pre><p>###3.文件管理</p>
-<pre><code>$ ls -a  查看隐藏文件
+</code></pre><h3 id="3-文件管理"><a href="#3-文件管理" class="headerlink" title="3.文件管理"></a>3.文件管理</h3><pre><code>$ ls -a  查看隐藏文件
 $ ll &lt;文件名&gt; 查看权限的命令
 $ cp &lt;文件&gt; &lt;目录&gt;   复制文件
 $ cp -r &lt;目录&gt; &lt;目录&gt;
@@ -543,17 +539,17 @@ $ chown 改变文件的所有者
 $ chmod 改变文件的权限
 head,tail,more,less，cat,nl 等查看文件的操作具体参考man手册
 </code></pre><p>如果你有一个自己的文件不想被其他用户读r、写w、执行x，那么就需要对文件的权限做修改，这里有两种方式：</p>
-<p>####二进制数字表示</p>
-<p>每个文件的三组权限（拥有者，所属用户组，其他用户，记住这个顺序是一定的）对应一个 “ rwx “ ，所以如果我要将文件“ iphone6 ”的权限改为只有我自己可以用那么就这样：<br>    `chmod 700 iphone6```</p>
-<p>####加减赋值操作</p>
-<p><code>g、o</code> 还有 <code>u</code> 分别表示 <code>group所属用户组、others其他用户</code> 和 <code>user</code>，<code>+</code> 和 <code>-</code> 分别表示增加和去掉相应的权限</p>
+<h4 id="二进制数字表示"><a href="#二进制数字表示" class="headerlink" title="二进制数字表示"></a>二进制数字表示</h4><p>每个文件的三组权限（拥有者，所属用户组，其他用户，记住这个顺序是一定的）对应一个 “ rwx “ ，所以如果我要将文件“ iphone6 ”的权限改为只有我自己可以用那么就这样：<br>    `chmod 700 iphone6```</p>
+<h4 id="加减赋值操作"><a href="#加减赋值操作" class="headerlink" title="加减赋值操作"></a>加减赋值操作</h4><p><code>g、o</code> 还有 <code>u</code> 分别表示 <code>group所属用户组、others其他用户</code> 和 <code>user</code>，<code>+</code> 和 <code>-</code> 分别表示增加和去掉相应的权限</p>
 <p><strong>*注意</strong>：目录的x代表用户能否进入该目录成为工作目录，如果对于一个目录只有r没有x权限，则只能读取该目录下的文件名，但是无法进入到该目录下，因此一般来说开发目录给任何人浏览时至少给予rx权限但w不要随便给*</p>
-<p>###4.目录结构<br>    $ pwd获取当前路径<br> Linux 是以树形目录结构的形式来构建整个系统的，可以理解为树形目录是一个用户可操作系统的骨架。虽然本质上无论是目录结构还是操作系统内核都是存储在磁盘上的，但从逻辑上来说 Linux 的磁盘是“挂在”（挂载在）目录上的，每一个目录不仅能使用本地磁盘分区的文件系统，也可以使用网络上的文件系统。举例来说，可以利用 <em>网络文件系统（Network File System，NFS）服务器</em> 载入某特定目录等。</p>
+<h3 id="4-目录结构"><a href="#4-目录结构" class="headerlink" title="4.目录结构"></a>4.目录结构</h3><pre><code>$ pwd获取当前路径
+</code></pre><p> Linux 是以树形目录结构的形式来构建整个系统的，可以理解为树形目录是一个用户可操作系统的骨架。虽然本质上无论是目录结构还是操作系统内核都是存储在磁盘上的，但从逻辑上来说 Linux 的磁盘是“挂在”（挂载在）目录上的，每一个目录不仅能使用本地磁盘分区的文件系统，也可以使用网络上的文件系统。举例来说，可以利用 <em>网络文件系统（Network File System，NFS）服务器</em> 载入某特定目录等。</p>
 <p> Linux的目录结构遵守FHS标准，如下图<br><img src="http://i.imgur.com/Eskqr1r.png" alt=""></p>
 <p>| ————- |:————-<br>| ./     | 当前目录<br>| ../     | 上一级目录<br>| 文件名前有. | 隐藏文件<br>| -  |上一次所在目录<br>| ~ |当前用户的home</p>
-<p>###5.环境变量 ###</p>
-<p>######1. 变量的赋值,读取和删除######<br>    $ tmp=shiyanlou  #赋值<br>    $ echo $tmp         #读取<br>    $ unset tmp         #删除</p>
-<p>#######2.环境变量的设置######<br>环境变量的定义是在当前进程的子进程有效的变量</p>
+<h3 id="5-环境变量"><a href="#5-环境变量" class="headerlink" title="5.环境变量"></a>5.环境变量</h3><h6 id="1-变量的赋值-读取和删除"><a href="#1-变量的赋值-读取和删除" class="headerlink" title="1. 变量的赋值,读取和删除"></a>1. 变量的赋值,读取和删除</h6><pre><code>$ tmp=shiyanlou  #赋值
+$ echo $tmp         #读取
+$ unset tmp         #删除
+</code></pre><p>####### 2.环境变量的设置######<br>环境变量的定义是在当前进程的子进程有效的变量</p>
 <p>| ————- |:————-<br>|set |    显示当前 Shell 所有变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量。<br>|env |    显示与当前用户相关的环境变量，还可以让命令在指定环境中运行。<br>|export |    显示从 Shell 中导出成环境变量的变量，也能通过它将自定义变量导出为环境变量。<br>以下是实例<br><img src="http://i.imgur.com/AUUeYtz.png" alt=""><br>按变量的生存周期来划分，Linux 变量可分为两类：</p>
 <ul>
 <li>永久的：需要修改配置文件，变量永久生效；</li>
@@ -562,9 +558,12 @@ head,tail,more,less，cat,nl 等查看文件的操作具体参考man手册
 <li>临时的：使用 export 命令行声明即可，变量在关闭 shell 时失效。</li>
 </ul>
 <p>这里介绍三个重要文件 /etc/bashrc（有的 Linux 没有这个文件） 和 /etc/profile 以及是每个用户目录下的一个隐藏文件(使用<code>ls -a</code>命令查看)： ，它们分别存放的是 shell 变量和全局环境变量和当前用户的环境变量 只需要修改里面的内容就能改变环境变量</p>
-<p>######3.命令的环境变量######<br>    $ echo $PATH    #查看命令的环境变量<br>    $ PATH=$PATH:/home/shiyanlou/mybin      #把”/home/shiyanlou/mybin”这个目录添加到环境变量 但是这个方法只在当前shell有效，因此需要添加下一步<br>    $ echo “PATH=$PATH:/home/shiyanlou/mybin” &gt;&gt; .bashr         #bash每次启动时会默认执行一个配置脚本，以初始化环境，包括添加一些用户自定义环境变量等 etc和用户目录都有.bashrc不过通常只修改用户目录下的配置文件<br>    $ souce .bashrc      #让环境变量立即生效</p>
-<p>###5.文件查找###<br>| ————- |:————-<br>| whereis  &lt;文件名&gt;   | 只能搜索二进制文件(-b)，man 帮助文件(-m)和源代码文件(-s)<br>| locate &lt;文件名&gt;     |  使用该命令前需要先执行<code>sudo updatedb</code>，可以用来查指定目录及其子目录下特定类型的文件 如<code>$ locate /usr/share/\*.jpg</code><br>| which &lt;软件名&gt;         |<br>| find [path] [option] [action] | find /etc/ -name sources.list</p>
-<p>###6.文件打包和解压###<br>| ————- |:————-<br>|文件后缀名     |说明<br>|<em>.zip |    zip 程序打包压缩的文件<br>|</em>.rar |rar 程序压缩的文件<br>|<em>.7z  |7zip 程序压缩的文件<br>|</em>.tar |tar 程序打包，未压缩的文件<br>|<em>.gz  |gzip 程序（GNU zip）压缩的文件<br>|</em>.xz  |xz 程序压缩的文件<br>|<em>.bz2 |bzip2 程序压缩的文件<br>|</em>.tar.gz|     tar 打包，gzip 程序压缩的文件<br>|<em>.tar.xz |    tar 打包，xz 程序压缩的文件<br>|</em>tar.bz2 |    tar 打包，bzip2 程序压缩的文件<br>|*.tar.7z |    tar 打包，7z 程序压缩的文件</p>
+<h6 id="3-命令的环境变量"><a href="#3-命令的环境变量" class="headerlink" title="3.命令的环境变量"></a>3.命令的环境变量</h6><pre><code>$ echo $PATH    #查看命令的环境变量 
+$ PATH=$PATH:/home/shiyanlou/mybin      #把&quot;/home/shiyanlou/mybin&quot;这个目录添加到环境变量 但是这个方法只在当前shell有效，因此需要添加下一步
+$ echo &quot;PATH=$PATH:/home/shiyanlou/mybin&quot; &gt;&gt; .bashr         #bash每次启动时会默认执行一个配置脚本，以初始化环境，包括添加一些用户自定义环境变量等 etc和用户目录都有.bashrc不过通常只修改用户目录下的配置文件
+$ souce .bashrc      #让环境变量立即生效
+</code></pre><h3 id="5-文件查找"><a href="#5-文件查找" class="headerlink" title="5.文件查找"></a>5.文件查找</h3><p>| ————- |:————-<br>| whereis  &lt;文件名&gt;   | 只能搜索二进制文件(-b)，man 帮助文件(-m)和源代码文件(-s)<br>| locate &lt;文件名&gt;     |  使用该命令前需要先执行<code>sudo updatedb</code>，可以用来查指定目录及其子目录下特定类型的文件 如<code>$ locate /usr/share/\*.jpg</code><br>| which &lt;软件名&gt;         |<br>| find [path] [option] [action] | find /etc/ -name sources.list</p>
+<h3 id="6-文件打包和解压"><a href="#6-文件打包和解压" class="headerlink" title="6.文件打包和解压"></a>6.文件打包和解压</h3><p>| ————- |:————-<br>|文件后缀名     |说明<br>|<em>.zip |    zip 程序打包压缩的文件<br>|</em>.rar |rar 程序压缩的文件<br>|<em>.7z  |7zip 程序压缩的文件<br>|</em>.tar |tar 程序打包，未压缩的文件<br>|<em>.gz  |gzip 程序（GNU zip）压缩的文件<br>|</em>.xz  |xz 程序压缩的文件<br>|<em>.bz2 |bzip2 程序压缩的文件<br>|</em>.tar.gz|     tar 打包，gzip 程序压缩的文件<br>|<em>.tar.xz |    tar 打包，xz 程序压缩的文件<br>|</em>tar.bz2 |    tar 打包，bzip2 程序压缩的文件<br>|*.tar.7z |    tar 打包，7z 程序压缩的文件</p>
 <pre><code>zip：
     打包 ：zip something.zip something （目录请加 -r 参数）
     解包：unzip something
@@ -573,15 +572,18 @@ tar：
     打包：tar -zcvf something.tar something
     解包：tar -zxvf something.tar
     指定路径：-C 参数
-</code></pre><p>###7.常见命令###</p>
-<p>| ————- |:————-<br>|    crontab     |<br>|    cut            | 打印每一行的某一字段 | $ cut /etc/passwd -d ‘:’ -f 1,6<br>|    grep        | 在文本中或 stdin 中查找匹配字符串<br>|    wc            | 计字数<br>|    sort        | 排序<br>|    unique        | 去重复</p>
-<p>###8.管道与重定向###</p>
-<p>管道是一种通信机制，通常用于进程间的通信。匿名管道，在命令行中由<code>|</code>分隔符表示。<br>管道默认是连接前一个命令的输出到下一个命令的输入，而重定向通常是需要一个文件来建立两个命令的连接。</p>
-<p>###软件包管理<br>    $ rpm -q &lt; rpm package name&gt;查询有没有安装包<br>    $ service sshd start  或者使用 /etc/init.d/sshd start   启动ssh服务</p>
-<pre><code>$ tar -zxvf pycharm-community-5.0.1.tar.gz  解压
-$ sh pycharm-community-5.0.1/bin/pycharm.sh  执行程序
-</code></pre><p>###SSH<br>    $ ssh-keygen -t rsa   #一路回车<br>    $ cat .ssh/id_rsa.pub &gt;&gt; .ssh/authorized_keys<br>    $ chmod 600 .ssh/authorized_keys</p>
+</code></pre><h3 id="7-常见命令"><a href="#7-常见命令" class="headerlink" title="7.常见命令"></a>7.常见命令</h3><p>| ————- |:————-<br>|    crontab     |<br>|    cut            | 打印每一行的某一字段 | $ cut /etc/passwd -d ‘:’ -f 1,6<br>|    grep        | 在文本中或 stdin 中查找匹配字符串<br>|    wc            | 计字数<br>|    sort        | 排序<br>|    unique        | 去重复</p>
+<h3 id="8-管道与重定向"><a href="#8-管道与重定向" class="headerlink" title="8.管道与重定向"></a>8.管道与重定向</h3><p>管道是一种通信机制，通常用于进程间的通信。匿名管道，在命令行中由<code>|</code>分隔符表示。<br>管道默认是连接前一个命令的输出到下一个命令的输入，而重定向通常是需要一个文件来建立两个命令的连接。</p>
+<h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><pre><code>$ rpm -q &lt; rpm package name&gt;查询有没有安装包
+$ service sshd start  或者使用 /etc/init.d/sshd start   启动ssh服务
 
+
+$ tar -zxvf pycharm-community-5.0.1.tar.gz  解压
+$ sh pycharm-community-5.0.1/bin/pycharm.sh  执行程序
+</code></pre><h3 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h3><pre><code>$ ssh-keygen -t rsa   #一路回车
+$ cat .ssh/id_rsa.pub &gt;&gt; .ssh/authorized_keys
+$ chmod 600 .ssh/authorized_keys
+</code></pre>
           
         
       
@@ -643,7 +645,7 @@ $ sh pycharm-community-5.0.1/bin/pycharm.sh  执行程序
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/22/Spark学学习笔记/" itemprop="url">Spark学习笔记（1）术语概览</a></h1>
+                <a class="post-title-link" href="/2017/05/22/Spark学学习笔记/" itemprop="url">Spark学习笔记（1）术语概览(updating)</a></h1>
         
 
         <div class="post-meta">
@@ -693,11 +695,11 @@ $ sh pycharm-community-5.0.1/bin/pycharm.sh  执行程序
         
           
             <p> spark核心共有4个模块，面对的实际情景如下图所示<br><img src="http://i.imgur.com/YN9lQ4W.jpg" alt=""></p>
-<p>###RDD(Resilient Distribute Datasets)<br>目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be operated on in parallel<br>.即可以并行操作的容错集合元素。它支持两种操作： transformations和actions。transformation指从原有数据按照一定规则创造出新的数据集，一个相关的典例就是常见的map操作。actions指运行完操作数据集的程序后会返回一个值，对应典例是reduce。</p>
-<p>###SQL,DataSet和DataFrame<br>Spark SQL 是 Spark 处理结构化数据的一个模块，功能是执行SQL查询，返回DataSet/DataFrame的查询结果。</p>
+<h3 id="RDD-Resilient-Distribute-Datasets"><a href="#RDD-Resilient-Distribute-Datasets" class="headerlink" title="RDD(Resilient Distribute Datasets)"></a>RDD(Resilient Distribute Datasets)</h3><p>目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be operated on in parallel<br>.即可以并行操作的容错集合元素。它支持两种操作： transformations和actions。transformation指从原有数据按照一定规则创造出新的数据集，一个相关的典例就是常见的map操作。actions指运行完操作数据集的程序后会返回一个值，对应典例是reduce。</p>
+<h3 id="SQL-DataSet和DataFrame"><a href="#SQL-DataSet和DataFrame" class="headerlink" title="SQL,DataSet和DataFrame"></a>SQL,DataSet和DataFrame</h3><p>Spark SQL 是 Spark 处理结构化数据的一个模块，功能是执行SQL查询，返回DataSet/DataFrame的查询结果。</p>
 <p>一个DataSet 是一个分布式数据集，scala/java支持Dataset api，但是python不支持。</p>
 <p>一个 DataFrame 所代表的是一个多个 Row（行）的 Dataset，类似关系型数据库中表的概念。Scala，java，python 和 R 均支持DataFrame api。DataFrame 可以从大量的 Source 中构造出来，像 : 结构化的数据文件，Hive中的表，外部的数据库，或者已存在的 RDD。可见，它是一种跨语言的、通用的数据科学抽象。<br><strong>总之，DataFrame 可以理解为以RDD为基础的，结构化带有模式信息的分布式数据集，具有额外的SQL接口。</strong> </p>
-<p>###Spark Stream<br>Spark Streaming 是现有 Spark 核心 API 的一种扩展，适用于实时数据在可扩展、高吞吐、高容错等特性下的流处理。<br><img src="http://i.imgur.com/6DavYrm.png" alt=""><br>Spark Streaming 可以接收实时的数据流，然后将其划分为 Batch （可以理解为各个批次的数据块）。这些 Batch 将由真正的 Spark 引擎来处理，创建最后的处理结果的数据流，并且这些数据流也是以 Batch 的形式存在的。它们通常可以存放至 HDFS、HBase 等处。后续可以继续用 Spark 进行处理，或者是导向 Hadoop 的 MapReduce ，以及 Drill 、Hive 等是用于不同场景的数据分析工具。</p>
+<h3 id="Spark-Stream"><a href="#Spark-Stream" class="headerlink" title="Spark Stream"></a>Spark Stream</h3><p>Spark Streaming 是现有 Spark 核心 API 的一种扩展，适用于实时数据在可扩展、高吞吐、高容错等特性下的流处理。<br><img src="http://i.imgur.com/6DavYrm.png" alt=""><br>Spark Streaming 可以接收实时的数据流，然后将其划分为 Batch （可以理解为各个批次的数据块）。这些 Batch 将由真正的 Spark 引擎来处理，创建最后的处理结果的数据流，并且这些数据流也是以 Batch 的形式存在的。它们通常可以存放至 HDFS、HBase 等处。后续可以继续用 Spark 进行处理，或者是导向 Hadoop 的 MapReduce ，以及 Drill 、Hive 等是用于不同场景的数据分析工具。</p>
 
           
         
@@ -809,8 +811,15 @@ $ sh pycharm-community-5.0.1/bin/pycharm.sh  执行程序
       
         
           
-            <p>###一.安装及配置依赖的软件包<br>安装openssh-server、java、rsync等,配置ssh免密码登录<br>    $ sudo apt-get update<br>    $ sudo apt-get install openssh-server rsync<br>    $ sudo service ssh restart<br>    $ sudo apt-get install openjdk-7-jdk<br>    $ java -version<br>    $ su -l hadoop<br>    $ ssh-keygen -t rsa   #一路回车<br>    $ cat .ssh/id_rsa.pub &gt;&gt; .ssh/authorized_keys<br>    $ sudo chmod 600 .ssh/authorized_keys<br>    $ ssh localhost</p>
-<p>###二.下载并安装Hadoop<br>    $  su hadoop<br>    $  hadoop<br>    $  sudo wget <a href="http://labfile.oss.aliyuncs.com/hadoop-2.6.0.tar.gz" target="_blank" rel="external">http://labfile.oss.aliyuncs.com/hadoop-2.6.0.tar.gz</a><br>    $ sudo tar -zxvf hadoop-2.6.0.tar.gz<br>    $ sudo mv hadoop-2.6.0 /usr/local/hadoop<br>    $ sudo chmod 777 /usr/local/hadoop<br>    $ vim /home/hadoop/.bashrc<br>在/home/hadoop/.bashrc文件末尾添加下列内容：</p>
+            <h3 id="一-安装及配置依赖的软件包"><a href="#一-安装及配置依赖的软件包" class="headerlink" title="一.安装及配置依赖的软件包"></a>一.安装及配置依赖的软件包</h3><p>安装openssh-server、java、rsync等,配置ssh免密码登录<br>    $ sudo apt-get update<br>    $ sudo apt-get install openssh-server rsync<br>    $ sudo service ssh restart<br>    $ sudo apt-get install openjdk-7-jdk<br>    $ java -version<br>    $ su -l hadoop<br>    $ ssh-keygen -t rsa   #一路回车<br>    $ cat .ssh/id_rsa.pub &gt;&gt; .ssh/authorized_keys<br>    $ sudo chmod 600 .ssh/authorized_keys<br>    $ ssh localhost</p>
+<h3 id="二-下载并安装Hadoop"><a href="#二-下载并安装Hadoop" class="headerlink" title="二.下载并安装Hadoop"></a>二.下载并安装Hadoop</h3><pre><code>$  su hadoop
+$  hadoop
+$  sudo wget http://labfile.oss.aliyuncs.com/hadoop-2.6.0.tar.gz
+$ sudo tar -zxvf hadoop-2.6.0.tar.gz
+$ sudo mv hadoop-2.6.0 /usr/local/hadoop
+$ sudo chmod 777 /usr/local/hadoop
+$ vim /home/hadoop/.bashrc
+</code></pre><p>在/home/hadoop/.bashrc文件末尾添加下列内容：</p>
 <pre><code>#HADOOP START
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 export HADOOP_INSTALL=/usr/local/hadoop
@@ -824,7 +833,7 @@ export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
 export HADOOP_OPTS=&quot;-Djava.library.path=$HADOOP_INSTALL/lib&quot;
 #HADOOP END
 </code></pre><p>保存退出后，激活新加的环境变量<br>    $ source ~/.bashrc</p>
-<p>###三.测试验证<br>创建输入的数据，暂时采用/etc/protocols文件作为测试</p>
+<h3 id="三-测试验证"><a href="#三-测试验证" class="headerlink" title="三.测试验证"></a>三.测试验证</h3><p>创建输入的数据，暂时采用/etc/protocols文件作为测试</p>
 <pre><code>$ cd /usr/local/hadoop
 $ sudo mkdir input
 $ sudo cp /etc/protocols ./input
@@ -1093,8 +1102,7 @@ $ sudo cp /etc/protocols ./input
 <li>Repository：仓库区（或本地仓库）</li>
 <li>Remote：远程仓库</li>
 </ul>
-<p>###1.新建代码库</p>
-<pre><code># 在当前目录新建一个Git代码库
+<h3 id="1-新建代码库"><a href="#1-新建代码库" class="headerlink" title="1.新建代码库"></a>1.新建代码库</h3><pre><code># 在当前目录新建一个Git代码库
 $ git init
 
 # 新建一个目录，将其初始化为Git代码库
@@ -1102,7 +1110,7 @@ $ git init [project-name]
 
 # 下载一个项目和它的整个代码历史
 $ git clone [url]
-</code></pre><p>###2.配置<br>Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
+</code></pre><h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h3><p>Git的设置文件为.gitconfig，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
 <pre><code># 显示当前的Git配置
 $ git config --list
 
@@ -1112,8 +1120,7 @@ $ git config -e [--global]
 # 设置提交代码时的用户信息
 $ git config [--global] user.name &quot;[name]&quot;
 $ git config [--global] user.email &quot;[email address]&quot;
-</code></pre><p>###3.增加/删除文件</p>
-<pre><code># 添加指定文件到暂存区
+</code></pre><h3 id="3-增加-删除文件"><a href="#3-增加-删除文件" class="headerlink" title="3.增加/删除文件"></a>3.增加/删除文件</h3><pre><code># 添加指定文件到暂存区
 $ git add [file1] [file2] ...
 
 # 添加指定目录到暂存区，包括子目录
@@ -1134,8 +1141,7 @@ $ git rm --cached [file]
 
 # 改名文件，并且将这个改名放入暂存区
 $ git mv [file-original] [file-renamed]
-</code></pre><p>###4.代码提交</p>
-<pre><code># 提交暂存区到仓库区
+</code></pre><h3 id="4-代码提交"><a href="#4-代码提交" class="headerlink" title="4.代码提交"></a>4.代码提交</h3><pre><code># 提交暂存区到仓库区
 $ git commit -m [message]
 
 # 提交暂存区的指定文件到仓库区
@@ -1153,8 +1159,7 @@ $ git commit --amend -m [message]
 
 # 重做上一次commit，并包括指定文件的新变化
 $ git commit --amend [file1] [file2] ...
-</code></pre><p>###5.分支</p>
-<pre><code># 列出所有本地分支
+</code></pre><h3 id="5-分支"><a href="#5-分支" class="headerlink" title="5.分支"></a>5.分支</h3><pre><code># 列出所有本地分支
 $ git branch
 
 # 列出所有远程分支
@@ -1196,8 +1201,7 @@ $ git branch -d [branch-name]
 # 删除远程分支
 $ git push origin –delete [branch-name]
 $ git branch -dr [remote/branch]
-</code></pre><p>###6.标签</p>
-<pre><code># 列出所有tag
+</code></pre><h3 id="6-标签"><a href="#6-标签" class="headerlink" title="6.标签"></a>6.标签</h3><pre><code># 列出所有tag
 $ git tag
 
 # 新建一个tag在当前commit
@@ -1223,8 +1227,7 @@ $ git push [remote] --tags
 
 # 新建一个分支，指向某个tag
 $ git checkout -b [branch] [tag]
-</code></pre><p>###7.查看信息</p>
-<pre><code># 显示有变更的文件
+</code></pre><h3 id="7-查看信息"><a href="#7-查看信息" class="headerlink" title="7.查看信息"></a>7.查看信息</h3><pre><code># 显示有变更的文件
 $ git status
 
 # 显示当前分支的版本历史
@@ -1284,8 +1287,7 @@ $ git show [commit]:[filename]
 
 # 显示当前分支的最近几次提交
 $ git reflog
-</code></pre><p>###8.远程同步</p>
-<pre><code># 下载远程仓库的所有变动
+</code></pre><h3 id="8-远程同步"><a href="#8-远程同步" class="headerlink" title="8.远程同步"></a>8.远程同步</h3><pre><code># 下载远程仓库的所有变动
 $ git fetch [remote]
 
 # 显示所有远程仓库
@@ -1308,8 +1310,7 @@ $ git push [remote] --force
 
 # 推送所有分支到远程仓库
 $ git push [remote] --all
-</code></pre><p>###9.撤销</p>
-<pre><code># 恢复暂存区的指定文件到工作区
+</code></pre><h3 id="9-撤销"><a href="#9-撤销" class="headerlink" title="9.撤销"></a>9.撤销</h3><pre><code># 恢复暂存区的指定文件到工作区
 $ git checkout [file]
 
 # 恢复某个commit的指定文件到暂存区和工作区
@@ -1340,8 +1341,7 @@ $ git revert [commit]
 # 暂时将未提交的变化移除，稍后再移入
 $ git stash
 $ git stash pop
-</code></pre><p>###10.其他</p>
-<pre><code># 生成一个可供发布的压缩包
+</code></pre><h3 id="10-其他"><a href="#10-其他" class="headerlink" title="10.其他"></a>10.其他</h3><pre><code># 生成一个可供发布的压缩包
 $ git archive
 </code></pre>
           

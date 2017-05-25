@@ -90,16 +90,16 @@
 
 
 
-<meta name="description" content="###一.安装及配置依赖的软件包安装openssh-server、java、rsync等,配置ssh免密码登录    $ sudo apt-get update    $ sudo apt-get install openssh-server rsync    $ sudo service ssh restart    $ sudo apt-get install openjdk-7-jdk">
+<meta name="description" content="一.安装及配置依赖的软件包安装openssh-server、java、rsync等,配置ssh免密码登录    $ sudo apt-get update    $ sudo apt-get install openssh-server rsync    $ sudo service ssh restart    $ sudo apt-get install openjdk-7-jdk    $">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hadoop学习笔记(1)单机环境搭建与词频统计">
 <meta property="og:url" content="http://github.com/gayTao/gayTao.github.io.git/2017/05/22/hadoop学习笔记-1-单机环境搭建与词频统计/index.html">
 <meta property="og:site_name" content="桃树下的白手套">
-<meta property="og:description" content="###一.安装及配置依赖的软件包安装openssh-server、java、rsync等,配置ssh免密码登录    $ sudo apt-get update    $ sudo apt-get install openssh-server rsync    $ sudo service ssh restart    $ sudo apt-get install openjdk-7-jdk">
-<meta property="og:updated_time" content="2017-05-22T02:39:56.232Z">
+<meta property="og:description" content="一.安装及配置依赖的软件包安装openssh-server、java、rsync等,配置ssh免密码登录    $ sudo apt-get update    $ sudo apt-get install openssh-server rsync    $ sudo service ssh restart    $ sudo apt-get install openjdk-7-jdk    $">
+<meta property="og:updated_time" content="2017-05-25T11:13:30.455Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hadoop学习笔记(1)单机环境搭建与词频统计">
-<meta name="twitter:description" content="###一.安装及配置依赖的软件包安装openssh-server、java、rsync等,配置ssh免密码登录    $ sudo apt-get update    $ sudo apt-get install openssh-server rsync    $ sudo service ssh restart    $ sudo apt-get install openjdk-7-jdk">
+<meta name="twitter:description" content="一.安装及配置依赖的软件包安装openssh-server、java、rsync等,配置ssh免密码登录    $ sudo apt-get update    $ sudo apt-get install openssh-server rsync    $ sudo service ssh restart    $ sudo apt-get install openjdk-7-jdk    $">
 
 
 
@@ -346,8 +346,15 @@
       
 
       
-        <p>###一.安装及配置依赖的软件包<br>安装openssh-server、java、rsync等,配置ssh免密码登录<br>    $ sudo apt-get update<br>    $ sudo apt-get install openssh-server rsync<br>    $ sudo service ssh restart<br>    $ sudo apt-get install openjdk-7-jdk<br>    $ java -version<br>    $ su -l hadoop<br>    $ ssh-keygen -t rsa   #一路回车<br>    $ cat .ssh/id_rsa.pub &gt;&gt; .ssh/authorized_keys<br>    $ sudo chmod 600 .ssh/authorized_keys<br>    $ ssh localhost</p>
-<p>###二.下载并安装Hadoop<br>    $  su hadoop<br>    $  hadoop<br>    $  sudo wget <a href="http://labfile.oss.aliyuncs.com/hadoop-2.6.0.tar.gz" target="_blank" rel="external">http://labfile.oss.aliyuncs.com/hadoop-2.6.0.tar.gz</a><br>    $ sudo tar -zxvf hadoop-2.6.0.tar.gz<br>    $ sudo mv hadoop-2.6.0 /usr/local/hadoop<br>    $ sudo chmod 777 /usr/local/hadoop<br>    $ vim /home/hadoop/.bashrc<br>在/home/hadoop/.bashrc文件末尾添加下列内容：</p>
+        <h3 id="一-安装及配置依赖的软件包"><a href="#一-安装及配置依赖的软件包" class="headerlink" title="一.安装及配置依赖的软件包"></a>一.安装及配置依赖的软件包</h3><p>安装openssh-server、java、rsync等,配置ssh免密码登录<br>    $ sudo apt-get update<br>    $ sudo apt-get install openssh-server rsync<br>    $ sudo service ssh restart<br>    $ sudo apt-get install openjdk-7-jdk<br>    $ java -version<br>    $ su -l hadoop<br>    $ ssh-keygen -t rsa   #一路回车<br>    $ cat .ssh/id_rsa.pub &gt;&gt; .ssh/authorized_keys<br>    $ sudo chmod 600 .ssh/authorized_keys<br>    $ ssh localhost</p>
+<h3 id="二-下载并安装Hadoop"><a href="#二-下载并安装Hadoop" class="headerlink" title="二.下载并安装Hadoop"></a>二.下载并安装Hadoop</h3><pre><code>$  su hadoop
+$  hadoop
+$  sudo wget http://labfile.oss.aliyuncs.com/hadoop-2.6.0.tar.gz
+$ sudo tar -zxvf hadoop-2.6.0.tar.gz
+$ sudo mv hadoop-2.6.0 /usr/local/hadoop
+$ sudo chmod 777 /usr/local/hadoop
+$ vim /home/hadoop/.bashrc
+</code></pre><p>在/home/hadoop/.bashrc文件末尾添加下列内容：</p>
 <pre><code>#HADOOP START
 export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 export HADOOP_INSTALL=/usr/local/hadoop
@@ -361,7 +368,7 @@ export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
 export HADOOP_OPTS=&quot;-Djava.library.path=$HADOOP_INSTALL/lib&quot;
 #HADOOP END
 </code></pre><p>保存退出后，激活新加的环境变量<br>    $ source ~/.bashrc</p>
-<p>###三.测试验证<br>创建输入的数据，暂时采用/etc/protocols文件作为测试</p>
+<h3 id="三-测试验证"><a href="#三-测试验证" class="headerlink" title="三.测试验证"></a>三.测试验证</h3><p>创建输入的数据，暂时采用/etc/protocols文件作为测试</p>
 <pre><code>$ cd /usr/local/hadoop
 $ sudo mkdir input
 $ sudo cp /etc/protocols ./input
@@ -415,8 +422,8 @@ $ sudo cp /etc/protocols ./input
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/22/Spark学学习笔记/" rel="prev" title="Spark学习笔记（1）术语概览">
-                Spark学习笔记（1）术语概览 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/22/Spark学学习笔记/" rel="prev" title="Spark学习笔记（1）术语概览(updating)">
+                Spark学习笔记（1）术语概览(updating) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -464,8 +471,17 @@ $ sudo cp /etc/protocols ./input
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/timg.jpg"
@@ -518,6 +534,22 @@ $ sudo cp /etc/protocols ./input
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-安装及配置依赖的软件包"><span class="nav-number">1.</span> <span class="nav-text">一.安装及配置依赖的软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-下载并安装Hadoop"><span class="nav-number">2.</span> <span class="nav-text">二.下载并安装Hadoop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-测试验证"><span class="nav-number">3.</span> <span class="nav-text">三.测试验证</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

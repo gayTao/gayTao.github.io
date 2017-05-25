@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="spark核心共有4个模块，面对的实际情景如下图所示 ###RDD(Resilient Distribute Datasets)目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be opera">
+<meta name="description" content="spark核心共有4个模块，面对的实际情景如下图所示 RDD(Resilient Distribute Datasets)目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be operated">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark学习笔记（1）术语概览">
+<meta property="og:title" content="Spark学习笔记（1）术语概览(updating)">
 <meta property="og:url" content="http://github.com/gayTao/gayTao.github.io.git/2017/05/22/Spark学学习笔记/index.html">
 <meta property="og:site_name" content="桃树下的白手套">
-<meta property="og:description" content="spark核心共有4个模块，面对的实际情景如下图所示 ###RDD(Resilient Distribute Datasets)目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be opera">
+<meta property="og:description" content="spark核心共有4个模块，面对的实际情景如下图所示 RDD(Resilient Distribute Datasets)目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be operated">
 <meta property="og:image" content="http://i.imgur.com/YN9lQ4W.jpg">
 <meta property="og:image" content="http://i.imgur.com/6DavYrm.png">
-<meta property="og:updated_time" content="2017-05-23T09:18:57.961Z">
+<meta property="og:updated_time" content="2017-05-25T11:11:30.653Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark学习笔记（1）术语概览">
-<meta name="twitter:description" content="spark核心共有4个模块，面对的实际情景如下图所示 ###RDD(Resilient Distribute Datasets)目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be opera">
+<meta name="twitter:title" content="Spark学习笔记（1）术语概览(updating)">
+<meta name="twitter:description" content="spark核心共有4个模块，面对的实际情景如下图所示 RDD(Resilient Distribute Datasets)目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be operated">
 <meta name="twitter:image" content="http://i.imgur.com/YN9lQ4W.jpg">
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <title>Spark学习笔记（1）术语概览 | 桃树下的白手套</title>
+  <title>Spark学习笔记（1）术语概览(updating) | 桃树下的白手套</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -302,7 +302,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spark学习笔记（1）术语概览</h1>
+          <h1 class="post-title" itemprop="name headline">Spark学习笔记（1）术语概览(updating)</h1>
         
 
         <div class="post-meta">
@@ -350,11 +350,11 @@
 
       
         <p> spark核心共有4个模块，面对的实际情景如下图所示<br><img src="http://i.imgur.com/YN9lQ4W.jpg" alt=""></p>
-<p>###RDD(Resilient Distribute Datasets)<br>目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be operated on in parallel<br>.即可以并行操作的容错集合元素。它支持两种操作： transformations和actions。transformation指从原有数据按照一定规则创造出新的数据集，一个相关的典例就是常见的map操作。actions指运行完操作数据集的程序后会返回一个值，对应典例是reduce。</p>
-<p>###SQL,DataSet和DataFrame<br>Spark SQL 是 Spark 处理结构化数据的一个模块，功能是执行SQL查询，返回DataSet/DataFrame的查询结果。</p>
+<h3 id="RDD-Resilient-Distribute-Datasets"><a href="#RDD-Resilient-Distribute-Datasets" class="headerlink" title="RDD(Resilient Distribute Datasets)"></a>RDD(Resilient Distribute Datasets)</h3><p>目前，我对spark的理解浅显的停留在一种是大数据处理的框架。那么，要处理数据，就必须了解其中重要的操作元素RDD的概念。RDD在官网的定义是：It is a fault-tolerant collection of elements that can be operated on in parallel<br>.即可以并行操作的容错集合元素。它支持两种操作： transformations和actions。transformation指从原有数据按照一定规则创造出新的数据集，一个相关的典例就是常见的map操作。actions指运行完操作数据集的程序后会返回一个值，对应典例是reduce。</p>
+<h3 id="SQL-DataSet和DataFrame"><a href="#SQL-DataSet和DataFrame" class="headerlink" title="SQL,DataSet和DataFrame"></a>SQL,DataSet和DataFrame</h3><p>Spark SQL 是 Spark 处理结构化数据的一个模块，功能是执行SQL查询，返回DataSet/DataFrame的查询结果。</p>
 <p>一个DataSet 是一个分布式数据集，scala/java支持Dataset api，但是python不支持。</p>
 <p>一个 DataFrame 所代表的是一个多个 Row（行）的 Dataset，类似关系型数据库中表的概念。Scala，java，python 和 R 均支持DataFrame api。DataFrame 可以从大量的 Source 中构造出来，像 : 结构化的数据文件，Hive中的表，外部的数据库，或者已存在的 RDD。可见，它是一种跨语言的、通用的数据科学抽象。<br><strong>总之，DataFrame 可以理解为以RDD为基础的，结构化带有模式信息的分布式数据集，具有额外的SQL接口。</strong> </p>
-<p>###Spark Stream<br>Spark Streaming 是现有 Spark 核心 API 的一种扩展，适用于实时数据在可扩展、高吞吐、高容错等特性下的流处理。<br><img src="http://i.imgur.com/6DavYrm.png" alt=""><br>Spark Streaming 可以接收实时的数据流，然后将其划分为 Batch （可以理解为各个批次的数据块）。这些 Batch 将由真正的 Spark 引擎来处理，创建最后的处理结果的数据流，并且这些数据流也是以 Batch 的形式存在的。它们通常可以存放至 HDFS、HBase 等处。后续可以继续用 Spark 进行处理，或者是导向 Hadoop 的 MapReduce ，以及 Drill 、Hive 等是用于不同场景的数据分析工具。</p>
+<h3 id="Spark-Stream"><a href="#Spark-Stream" class="headerlink" title="Spark Stream"></a>Spark Stream</h3><p>Spark Streaming 是现有 Spark 核心 API 的一种扩展，适用于实时数据在可扩展、高吞吐、高容错等特性下的流处理。<br><img src="http://i.imgur.com/6DavYrm.png" alt=""><br>Spark Streaming 可以接收实时的数据流，然后将其划分为 Batch （可以理解为各个批次的数据块）。这些 Batch 将由真正的 Spark 引擎来处理，创建最后的处理结果的数据流，并且这些数据流也是以 Batch 的形式存在的。它们通常可以存放至 HDFS、HBase 等处。后续可以继续用 Spark 进行处理，或者是导向 Hadoop 的 MapReduce ，以及 Drill 、Hive 等是用于不同场景的数据分析工具。</p>
 
       
     </div>
@@ -450,8 +450,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/timg.jpg"
@@ -504,6 +513,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDD-Resilient-Distribute-Datasets"><span class="nav-number">1.</span> <span class="nav-text">RDD(Resilient Distribute Datasets)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL-DataSet和DataFrame"><span class="nav-number">2.</span> <span class="nav-text">SQL,DataSet和DataFrame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-Stream"><span class="nav-number">3.</span> <span class="nav-text">Spark Stream</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
