@@ -101,7 +101,7 @@
 <meta property="og:image" content="http://i.imgur.com/IwV6ubA.jpg">
 <meta property="og:image" content="http://i.imgur.com/Eskqr1r.png">
 <meta property="og:image" content="http://i.imgur.com/AUUeYtz.png">
-<meta property="og:updated_time" content="2017-05-25T11:12:39.060Z">
+<meta property="og:updated_time" content="2017-05-25T12:06:11.426Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux常见命令(updating)">
 <meta name="twitter:description" content="（更新中) 1.重要快捷键   按键 快捷键           [tab] 命令补全   [Ctrl+c] 强制终止当前程序   Ctrl+d 键盘输入结束或退出终端    Ctrl+s 暂停当前程序，暂停后按下任意键恢复运行   Ctrl+z 将当前程序放到后台运行，恢复到前台为命令fg   Ctrl+a 将光标移至输入行头，相当于Home键   Ctrl+e 将光标移至输入行末，相当于End">
@@ -425,12 +425,61 @@ head,tail,more,less，cat,nl 等查看文件的操作具体参考man手册
 <h3 id="4-目录结构"><a href="#4-目录结构" class="headerlink" title="4.目录结构"></a>4.目录结构</h3><pre><code>$ pwd获取当前路径
 </code></pre><p> Linux 是以树形目录结构的形式来构建整个系统的，可以理解为树形目录是一个用户可操作系统的骨架。虽然本质上无论是目录结构还是操作系统内核都是存储在磁盘上的，但从逻辑上来说 Linux 的磁盘是“挂在”（挂载在）目录上的，每一个目录不仅能使用本地磁盘分区的文件系统，也可以使用网络上的文件系统。举例来说，可以利用 <em>网络文件系统（Network File System，NFS）服务器</em> 载入某特定目录等。</p>
 <p> Linux的目录结构遵守FHS标准，如下图<br><img src="http://i.imgur.com/Eskqr1r.png" alt=""></p>
-<p>| ————- |:————-<br>| ./     | 当前目录<br>| ../     | 上一级目录<br>| 文件名前有. | 隐藏文件<br>| -  |上一次所在目录<br>| ~ |当前用户的home</p>
+<table>
+<thead>
+<tr>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>./</td>
+<td style="text-align:left">当前目录</td>
+</tr>
+<tr>
+<td>../</td>
+<td style="text-align:left">上一级目录</td>
+</tr>
+<tr>
+<td>文件名前有.</td>
+<td style="text-align:left">隐藏文件</td>
+</tr>
+<tr>
+<td>-</td>
+<td style="text-align:left">上一次所在目录</td>
+</tr>
+<tr>
+<td>~</td>
+<td style="text-align:left">当前用户的home</td>
+</tr>
+</tbody>
+</table>
 <h3 id="5-环境变量"><a href="#5-环境变量" class="headerlink" title="5.环境变量"></a>5.环境变量</h3><h6 id="1-变量的赋值-读取和删除"><a href="#1-变量的赋值-读取和删除" class="headerlink" title="1. 变量的赋值,读取和删除"></a>1. 变量的赋值,读取和删除</h6><pre><code>$ tmp=shiyanlou  #赋值
 $ echo $tmp         #读取
 $ unset tmp         #删除
 </code></pre><p>####### 2.环境变量的设置######<br>环境变量的定义是在当前进程的子进程有效的变量</p>
-<p>| ————- |:————-<br>|set |    显示当前 Shell 所有变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量。<br>|env |    显示与当前用户相关的环境变量，还可以让命令在指定环境中运行。<br>|export |    显示从 Shell 中导出成环境变量的变量，也能通过它将自定义变量导出为环境变量。<br>以下是实例<br><img src="http://i.imgur.com/AUUeYtz.png" alt=""><br>按变量的生存周期来划分，Linux 变量可分为两类：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>set</td>
+<td style="text-align:left">显示当前 Shell 所有变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量。</td>
+</tr>
+<tr>
+<td>env</td>
+<td style="text-align:left">显示与当前用户相关的环境变量，还可以让命令在指定环境中运行。</td>
+</tr>
+<tr>
+<td>export</td>
+<td style="text-align:left">显示从 Shell 中导出成环境变量的变量，也能通过它将自定义变量导出为环境变量。</td>
+</tr>
+</tbody>
+</table>
+<p>以下是实例<br><img src="http://i.imgur.com/AUUeYtz.png" alt=""><br>按变量的生存周期来划分，Linux 变量可分为两类：</p>
 <ul>
 <li>永久的：需要修改配置文件，变量永久生效；</li>
 </ul>
@@ -442,8 +491,87 @@ $ unset tmp         #删除
 $ PATH=$PATH:/home/shiyanlou/mybin      #把&quot;/home/shiyanlou/mybin&quot;这个目录添加到环境变量 但是这个方法只在当前shell有效，因此需要添加下一步
 $ echo &quot;PATH=$PATH:/home/shiyanlou/mybin&quot; &gt;&gt; .bashr         #bash每次启动时会默认执行一个配置脚本，以初始化环境，包括添加一些用户自定义环境变量等 etc和用户目录都有.bashrc不过通常只修改用户目录下的配置文件
 $ souce .bashrc      #让环境变量立即生效
-</code></pre><h3 id="5-文件查找"><a href="#5-文件查找" class="headerlink" title="5.文件查找"></a>5.文件查找</h3><p>| ————- |:————-<br>| whereis  &lt;文件名&gt;   | 只能搜索二进制文件(-b)，man 帮助文件(-m)和源代码文件(-s)<br>| locate &lt;文件名&gt;     |  使用该命令前需要先执行<code>sudo updatedb</code>，可以用来查指定目录及其子目录下特定类型的文件 如<code>$ locate /usr/share/\*.jpg</code><br>| which &lt;软件名&gt;         |<br>| find [path] [option] [action] | find /etc/ -name sources.list</p>
-<h3 id="6-文件打包和解压"><a href="#6-文件打包和解压" class="headerlink" title="6.文件打包和解压"></a>6.文件打包和解压</h3><p>| ————- |:————-<br>|文件后缀名     |说明<br>|<em>.zip |    zip 程序打包压缩的文件<br>|</em>.rar |rar 程序压缩的文件<br>|<em>.7z  |7zip 程序压缩的文件<br>|</em>.tar |tar 程序打包，未压缩的文件<br>|<em>.gz  |gzip 程序（GNU zip）压缩的文件<br>|</em>.xz  |xz 程序压缩的文件<br>|<em>.bz2 |bzip2 程序压缩的文件<br>|</em>.tar.gz|     tar 打包，gzip 程序压缩的文件<br>|<em>.tar.xz |    tar 打包，xz 程序压缩的文件<br>|</em>tar.bz2 |    tar 打包，bzip2 程序压缩的文件<br>|*.tar.7z |    tar 打包，7z 程序压缩的文件</p>
+</code></pre><h3 id="5-文件查找"><a href="#5-文件查找" class="headerlink" title="5.文件查找"></a>5.文件查找</h3><table>
+<thead>
+<tr>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>whereis  &lt;文件名&gt;</td>
+<td style="text-align:left">只能搜索二进制文件(-b)，man 帮助文件(-m)和源代码文件(-s)</td>
+</tr>
+<tr>
+<td>locate &lt;文件名&gt;</td>
+<td style="text-align:left">使用该命令前需要先执行<code>sudo updatedb</code>，可以用来查指定目录及其子目录下特定类型的文件 如<code>$ locate /usr/share/\*.jpg</code></td>
+</tr>
+<tr>
+<td>which &lt;软件名&gt;</td>
+</tr>
+<tr>
+<td>find [path] [option] [action]</td>
+<td style="text-align:left">find /etc/ -name sources.list</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-文件打包和解压"><a href="#6-文件打包和解压" class="headerlink" title="6.文件打包和解压"></a>6.文件打包和解压</h3><table>
+<thead>
+<tr>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件后缀名</td>
+<td style="text-align:left">说明</td>
+</tr>
+<tr>
+<td>*.zip</td>
+<td style="text-align:left">zip 程序打包压缩的文件</td>
+</tr>
+<tr>
+<td>*.rar</td>
+<td style="text-align:left">rar 程序压缩的文件</td>
+</tr>
+<tr>
+<td>*.7z</td>
+<td style="text-align:left">7zip 程序压缩的文件</td>
+</tr>
+<tr>
+<td>*.tar</td>
+<td style="text-align:left">tar 程序打包，未压缩的文件</td>
+</tr>
+<tr>
+<td>*.gz</td>
+<td style="text-align:left">gzip 程序（GNU zip）压缩的文件</td>
+</tr>
+<tr>
+<td>*.xz</td>
+<td style="text-align:left">xz 程序压缩的文件</td>
+</tr>
+<tr>
+<td>*.bz2</td>
+<td style="text-align:left">bzip2 程序压缩的文件</td>
+</tr>
+<tr>
+<td>*.tar.gz</td>
+<td style="text-align:left">tar 打包，gzip 程序压缩的文件</td>
+</tr>
+<tr>
+<td>*.tar.xz</td>
+<td style="text-align:left">tar 打包，xz 程序压缩的文件</td>
+</tr>
+<tr>
+<td>*tar.bz2</td>
+<td style="text-align:left">tar 打包，bzip2 程序压缩的文件</td>
+</tr>
+<tr>
+<td>*.tar.7z</td>
+<td style="text-align:left">tar 打包，7z 程序压缩的文件</td>
+</tr>
+</tbody>
+</table>
 <pre><code>zip：
     打包 ：zip something.zip something （目录请加 -r 参数）
     解包：unzip something
@@ -452,7 +580,39 @@ tar：
     打包：tar -zcvf something.tar something
     解包：tar -zxvf something.tar
     指定路径：-C 参数
-</code></pre><h3 id="7-常见命令"><a href="#7-常见命令" class="headerlink" title="7.常见命令"></a>7.常见命令</h3><p>| ————- |:————-<br>|    crontab     |<br>|    cut            | 打印每一行的某一字段 | $ cut /etc/passwd -d ‘:’ -f 1,6<br>|    grep        | 在文本中或 stdin 中查找匹配字符串<br>|    wc            | 计字数<br>|    sort        | 排序<br>|    unique        | 去重复</p>
+</code></pre><h3 id="7-常见命令"><a href="#7-常见命令" class="headerlink" title="7.常见命令"></a>7.常见命令</h3><table>
+<thead>
+<tr>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>crontab</td>
+</tr>
+<tr>
+<td>cut</td>
+<td style="text-align:left">打印每一行的某一字段</td>
+<td>$ cut /etc/passwd -d ‘:’ -f 1,6</td>
+</tr>
+<tr>
+<td>grep</td>
+<td style="text-align:left">在文本中或 stdin 中查找匹配字符串</td>
+</tr>
+<tr>
+<td>wc</td>
+<td style="text-align:left">计字数</td>
+</tr>
+<tr>
+<td>sort</td>
+<td style="text-align:left">排序</td>
+</tr>
+<tr>
+<td>unique</td>
+<td style="text-align:left">去重复</td>
+</tr>
+</tbody>
+</table>
 <h3 id="8-管道与重定向"><a href="#8-管道与重定向" class="headerlink" title="8.管道与重定向"></a>8.管道与重定向</h3><p>管道是一种通信机制，通常用于进程间的通信。匿名管道，在命令行中由<code>|</code>分隔符表示。<br>管道默认是连接前一个命令的输出到下一个命令的输入，而重定向通常是需要一个文件来建立两个命令的连接。</p>
 <h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><pre><code>$ rpm -q &lt; rpm package name&gt;查询有没有安装包
 $ service sshd start  或者使用 /etc/init.d/sshd start   启动ssh服务
