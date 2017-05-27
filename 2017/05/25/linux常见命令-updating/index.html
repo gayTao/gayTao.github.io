@@ -101,7 +101,7 @@
 <meta property="og:image" content="http://i.imgur.com/IwV6ubA.jpg">
 <meta property="og:image" content="http://i.imgur.com/Eskqr1r.png">
 <meta property="og:image" content="http://i.imgur.com/AUUeYtz.png">
-<meta property="og:updated_time" content="2017-05-25T12:10:46.585Z">
+<meta property="og:updated_time" content="2017-05-27T09:47:11.295Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux常见命令(updating)">
 <meta name="twitter:description" content="（更新中) 1.重要快捷键   按键 快捷键           [tab] 命令补全   [Ctrl+c] 强制终止当前程序   Ctrl+d 键盘输入结束或退出终端    Ctrl+s 暂停当前程序，暂停后按下任意键恢复运行   Ctrl+z 将当前程序放到后台运行，恢复到前台为命令fg   Ctrl+a 将光标移至输入行头，相当于Home键   Ctrl+e 将光标移至输入行末，相当于End">
@@ -589,15 +589,6 @@ tar：
 <td>crontab</td>
 </tr>
 <tr>
-<td>cut</td>
-<td style="text-align:left">打印每一行的某一字段</td>
-<td>$ cut /etc/passwd -d ‘:’ -f 1,6</td>
-</tr>
-<tr>
-<td>grep</td>
-<td style="text-align:left">在文本中或 stdin 中查找匹配字符串</td>
-</tr>
-<tr>
 <td>wc</td>
 <td style="text-align:left">计字数</td>
 </tr>
@@ -611,7 +602,9 @@ tar：
 </tr>
 </tbody>
 </table>
+<p>更多和详细的命令见bash常见文本处理命令详解</p>
 <h3 id="8-管道与重定向"><a href="#8-管道与重定向" class="headerlink" title="8.管道与重定向"></a>8.管道与重定向</h3><p>管道是一种通信机制，通常用于进程间的通信。匿名管道，在命令行中由<code>|</code>分隔符表示。<br>管道默认是连接前一个命令的输出到下一个命令的输入，而重定向通常是需要一个文件来建立两个命令的连接。</p>
+<p><code>&gt;</code> 标准输出覆盖新文件<br><code>&gt;&gt;</code> 标准输出追加新文件</p>
 <h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><pre><code>$ rpm -q &lt; rpm package name&gt;查询有没有安装包
 $ service sshd start  或者使用 /etc/init.d/sshd start   启动ssh服务
 
@@ -754,7 +747,7 @@ $ chmod 600 .ssh/authorized_keys
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -767,7 +760,7 @@ $ chmod 600 .ssh/authorized_keys
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
