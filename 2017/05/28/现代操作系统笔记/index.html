@@ -1,0 +1,827 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="进程线程模型进程的基本概念多道程序设计允许多个程序同时进入内存并运行，其目的是为了提高系统效率。有多个逻辑程序计数器，由于只有一个物理CPU和一个程序计数器，因此每当程序运行时，逻辑程序计数器的内容就载入程序计数器 并发一段时间间隔内，单处理器上有两个或以上的程序同时处于开始运行但尚未结束的状态 进程（Process）进程是具有独立功能的程序关于某个数据集合上的一次运行活动，是系统进行资源分配和调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="现代操作系统笔记">
+<meta property="og:url" content="http://github.com/gayTao/gayTao.github.io.git/2017/05/28/现代操作系统笔记/index.html">
+<meta property="og:site_name" content="桃树下的白手套">
+<meta property="og:description" content="进程线程模型进程的基本概念多道程序设计允许多个程序同时进入内存并运行，其目的是为了提高系统效率。有多个逻辑程序计数器，由于只有一个物理CPU和一个程序计数器，因此每当程序运行时，逻辑程序计数器的内容就载入程序计数器 并发一段时间间隔内，单处理器上有两个或以上的程序同时处于开始运行但尚未结束的状态 进程（Process）进程是具有独立功能的程序关于某个数据集合上的一次运行活动，是系统进行资源分配和调">
+<meta property="og:image" content="http://i.imgur.com/mJRJaOw.jpg">
+<meta property="og:updated_time" content="2017-05-29T10:38:13.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="现代操作系统笔记">
+<meta name="twitter:description" content="进程线程模型进程的基本概念多道程序设计允许多个程序同时进入内存并运行，其目的是为了提高系统效率。有多个逻辑程序计数器，由于只有一个物理CPU和一个程序计数器，因此每当程序运行时，逻辑程序计数器的内容就载入程序计数器 并发一段时间间隔内，单处理器上有两个或以上的程序同时处于开始运行但尚未结束的状态 进程（Process）进程是具有独立功能的程序关于某个数据集合上的一次运行活动，是系统进行资源分配和调">
+<meta name="twitter:image" content="http://i.imgur.com/mJRJaOw.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://github.com/gayTao/gayTao.github.io.git/2017/05/28/现代操作系统笔记/"/>
+
+
+
+
+
+  <title>现代操作系统笔记 | 桃树下的白手套</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">桃树下的白手套</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://github.com/gayTao/gayTao.github.io.git/2017/05/28/现代操作系统笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王套套">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/timg.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桃树下的白手套">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">现代操作系统笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-28T15:11:19+08:00">
+                2017-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/28/现代操作系统笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/05/28/现代操作系统笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="进程线程模型"><a href="#进程线程模型" class="headerlink" title="进程线程模型"></a>进程线程模型</h2><h3 id="进程的基本概念"><a href="#进程的基本概念" class="headerlink" title="进程的基本概念"></a>进程的基本概念</h3><h4 id="多道程序设计"><a href="#多道程序设计" class="headerlink" title="多道程序设计"></a>多道程序设计</h4><p>允许多个程序同时进入内存并运行，其目的是为了提高系统效率。有多个逻辑程序计数器，由于只有一个物理CPU和一个程序计数器，因此每当程序运行时，逻辑程序计数器的内容就载入程序计数器</p>
+<h4 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h4><p>一段时间间隔内，单处理器上有两个或以上的程序同时处于开始运行但尚未结束的状态</p>
+<h4 id="进程（Process）"><a href="#进程（Process）" class="headerlink" title="进程（Process）"></a>进程（Process）</h4><p>进程是具有独立功能的程序关于某个数据集合上的一次运行活动，是系统进行资源分配和调度的独立单位。也称任务(task)，linux使用<strong>ps</strong>查看进程</p>
+<ul>
+<li>程序的一次执行过程</li>
+<li>是正在运行程序的抽象</li>
+<li>将一个CPU变幻成多个虚拟的CPU</li>
+<li>系统资源以进程为单位分配，如内存·文件….每个具有独立的地址空间</li>
+<li>操作系统将CPU调度给需要的进程</li>
+</ul>
+<h4 id="进程控制块PCB"><a href="#进程控制块PCB" class="headerlink" title="进程控制块PCB"></a>进程控制块PCB</h4><p>操作系统用于管理控制进程的一个专门数据结构。记录进程的各种属性，描述进程的动态变化过程。</p>
+<ul>
+<li>PCB是系统感知进程存在的唯一标志-&gt;进程与PCB是一一对应的</li>
+<li>进程表：所有进程的PCB集合</li>
+</ul>
+<h3 id="进程状态和状态转换"><a href="#进程状态和状态转换" class="headerlink" title="进程状态和状态转换"></a>进程状态和状态转换</h3><h4 id="程序的三种基本状态"><a href="#程序的三种基本状态" class="headerlink" title="程序的三种基本状态"></a>程序的三种基本状态</h4><ol>
+<li>运行态(Running)</li>
+<li>就绪态(Ready) 具备运行条件，没得到空闲CPU</li>
+<li>等待态(阻塞态) </li>
+</ol>
+<p>1-&gt;2：运行进程用完了时间片或者一个高优先级进程进入就绪态，抢占正在运行的进程<br>1-&gt;3: 请求OS服务，等待I/O结果，等待另一进程提供消息<br>3-&gt;2:等待的事情发生了</p>
+<p><strong>阻塞态不能直接到运行态,就绪态不能直接到阻塞态</strong></p>
+<p>进程的其他状态</p>
+<ol>
+<li>创建(new) :已完成创建一进程必要的工作，如PID,PCB，但因为资源有限尚未同意执行该进程</li>
+<li>终止(terminated)</li>
+<li>挂起(suspend)：用于调节负载,进程不占用内存，其进程映像交换到到磁盘上</li>
+</ol>
+<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3><p><strong>原语(primitive)：原子操作(atomic)</strong>用于进程控制的原语有创建进程、撤销进程、阻塞进程、唤醒进程、改变进程优先级等</p>
+<h4 id="1-进程创建"><a href="#1-进程创建" class="headerlink" title="1.进程创建"></a>1.进程创建</h4><ul>
+<li>给新进程分配一个唯一标识以及进程控制块</li>
+<li>为进程分配虚拟地址空间</li>
+<li>初始化PCB </li>
+<li>设置相应的队列指针，如把进程插入就绪状态链表</li>
+</ul>
+<h4 id="2-进程撤销"><a href="#2-进程撤销" class="headerlink" title="2.进程撤销"></a>2.进程撤销</h4><p>结束进程 linux常用<strong>exit</strong>命令</p>
+<h4 id="3-进程阻塞"><a href="#3-进程阻塞" class="headerlink" title="3.进程阻塞"></a>3.进程阻塞</h4><p>当被等待的事件未发生时，由进程自己执行阻塞原语</p>
+<h4 id="4-Unix的几个进程控制操作"><a href="#4-Unix的几个进程控制操作" class="headerlink" title="4.Unix的几个进程控制操作"></a>4.Unix的几个进程控制操作</h4><ul>
+<li>fork()  通过复制调用进程来建立新的程序,<strong>linux采用写时复制技术Copy on Write加快创建进程:</strong>即之前 UNIX 的fork是以一次一页的方式复制父进程的地址空间，太慢了，也浪费，因为子进程并不需要那么多的信息。Linux改进为写时复制，父进程将地址空间的设置为只读权限（对子进程来说），然后将地址空间的指针传递给子进程，当子进程对父进程的地址空间进行写操作的时候，就会将对应的那页复制出去，单独为子进程开辟一个空间。</li>
+<li>exec()  </li>
+<li>exit(）</li>
+<li>wait(）</li>
+</ul>
+<h3 id="关于进程的讨论"><a href="#关于进程的讨论" class="headerlink" title="关于进程的讨论"></a>关于进程的讨论</h3><h4 id="进程分类"><a href="#进程分类" class="headerlink" title="进程分类"></a>进程分类</h4><p>系统进程和用户进程，前台进程和后台进程，cpu密集型进程和I/O密集型进程</p>
+<h4 id="进程与程序区别"><a href="#进程与程序区别" class="headerlink" title="进程与程序区别"></a>进程与程序区别</h4><p>程序静态，比较长久，但进程动态有生命周期，一个程序对应多个进程</p>
+<h4 id="进程映像-IMAGE-程序-数据-用户-内核-栈-PCB"><a href="#进程映像-IMAGE-程序-数据-用户-内核-栈-PCB" class="headerlink" title="进程映像(IMAGE):程序+数据+(用户,内核)栈+PCB"></a>进程映像(IMAGE):程序+数据+(用户,内核)栈+PCB</h4><h4 id="各进程的地址空间相互独立"><a href="#各进程的地址空间相互独立" class="headerlink" title="各进程的地址空间相互独立"></a>各进程的地址空间相互独立</h4><h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p>进程的一个运行实体，是CPU的调度单位。一个进程中的所有线程共享该进程的地址空间，但它们有各自独立的（私有的）栈(stack)。有以下三种实现</p>
+<h4 id="用户级线程"><a href="#用户级线程" class="headerlink" title="用户级线程"></a>用户级线程</h4><p>在user space建立线程库，runtime system完成线程的管理工作，如操作，内核管理的还是进程，不知道线程的存在，线程切换不需要内核态的特权</p>
+<p>该方法缺点是 大多数系统调用是阻塞的，因此，由于内核阻塞进程，故进程的所有线程都被阻塞</p>
+<h4 id="核心级线程"><a href="#核心级线程" class="headerlink" title="核心级线程"></a>核心级线程</h4><p>内核管理所有线程管理，线程切换需要内核支持<br>例子 windows</p>
+<h4 id="混合模型"><a href="#混合模型" class="headerlink" title="混合模型"></a>混合模型</h4><p>线程创建在用户空间完成，调度在内核空间完成</p>
+<h2 id="同步互斥机制"><a href="#同步互斥机制" class="headerlink" title="同步互斥机制"></a>同步互斥机制</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念:"></a>基本概念:</h3><h4 id="进程互斥"><a href="#进程互斥" class="headerlink" title="进程互斥"></a>进程互斥</h4><p>由于各进程要求使用共享资源(变量,文件)，而这些资源需要排他使用，各进程竞争使用这些资源</p>
+<h4 id="临界资源（共享资源，互斥资源，critical-resource）"><a href="#临界资源（共享资源，互斥资源，critical-resource）" class="headerlink" title="临界资源（共享资源，互斥资源，critical resource）"></a>临界资源（共享资源，互斥资源，critical resource）</h4><p>楼上的共享资源</p>
+<h4 id="临界区（critical-section-region"><a href="#临界区（critical-section-region" class="headerlink" title="临界区（critical section(region)"></a>临界区（critical section(region)</h4><p>各个进程中某个临界资源(共享变量实施操作的程序片段)</p>
+<h4 id="临界区的使用原则"><a href="#临界区的使用原则" class="headerlink" title="临界区的使用原则"></a>临界区的使用原则</h4><ol>
+<li>如果没有进程在临界区 想进临界区的进程就可以进入临界区 </li>
+<li>不允许两个进程 同时处于临界区中</li>
+<li>临界区外运行的进程，不能阻塞 其他的进程进入临界区</li>
+<li>不得使进程无限期的等待进入临界区</li>
+</ol>
+<h3 id="进程互斥的软件解法"><a href="#进程互斥的软件解法" class="headerlink" title="进程互斥的软件解法"></a>进程互斥的软件解法</h3><p>Peterson算法</p>
+<h3 id="进程互斥的硬件解法"><a href="#进程互斥的硬件解法" class="headerlink" title="进程互斥的硬件解法"></a>进程互斥的硬件解法</h3><h4 id="关中断"><a href="#关中断" class="headerlink" title="关中断"></a>关中断</h4><ul>
+<li>简单高效</li>
+<li>临界区大的时候开销大</li>
+<li>不适于多处理器</li>
+<li>适用于os本身，不适用于用户进程，因为这是特权指令</li>
+</ul>
+<h4 id="自旋锁-“测试加锁”指令TEST-AND-SET-LOCK"><a href="#自旋锁-“测试加锁”指令TEST-AND-SET-LOCK" class="headerlink" title="自旋锁 “测试加锁”指令TEST AND SET LOCK"></a>自旋锁 “测试加锁”指令TEST AND SET LOCK</h4><p>专为防止<strong>多处理器</strong>并发保护共享资源引入的锁机制<br>enter_region：复制锁到寄存器并将锁置为1，判断寄存器内容是否是0，若不是0，跳转到enter_region否则返回调用者进入临界区<br>leve_region：在锁中置0，返回调用者</p>
+<p>自旋锁与互斥锁有点类似，只是自旋锁不会引起调用者睡眠，如果自旋锁已经被别的执行单元保持，调用者就一直循环在那里看是否该自旋锁的保持者已经释放了锁，”自旋”一词就是因此而得名。由于自旋锁使用者一般保持锁时间非常短，因此选择自旋而不是睡眠是非常必要的，自旋锁的效率远高于互斥锁。</p>
+<p>可能会存在死锁问题</p>
+<h4 id="“交换”指令-EXCHANGE"><a href="#“交换”指令-EXCHANGE" class="headerlink" title="“交换”指令 EXCHANGE"></a>“交换”指令 EXCHANGE</h4><p>与自旋锁不同的地方只在于开始是给寄存器置1，交换寄存器和锁内容，判断寄存器内容以下相同</p>
+<h3 id="进程同步-synchronization"><a href="#进程同步-synchronization" class="headerlink" title="进程同步(synchronization)"></a>进程同步(synchronization)</h3><p>一个进程运行到某一点时，要求另一个伙伴进程为它提供消息，在未获得消息之前，该进程进入阻塞态，获得消息后被唤醒进入就绪态</p>
+<h3 id="信号量和PV操作"><a href="#信号量和PV操作" class="headerlink" title="信号量和PV操作"></a>信号量和PV操作</h3><p>信号量是一种特殊变量，用于进程间传递信息的一个整数值</p>
+<p>定义如下</p>
+<pre><code>struct semaphore{
+    int count;
+    queueType queue;
+}
+</code></pre><p>P:对信号量的test操作 每次操作–，当小于0时阻塞<br>V：对信号量的increment操作 每次操作++，小于0时唤醒改成就绪态<br>P,V操作都是原语操作</p>
+<p>用PV操作解决进程间互斥问题</p>
+<ul>
+<li>分析并发进程的关键活动，划定临界区</li>
+<li>设置信号量mutex，初值为1</li>
+<li>在临界区前实施P（mutex）</li>
+<li>在临界区后实施V（mutex）</li>
+</ul>
+<p><img src="http://i.imgur.com/mJRJaOw.jpg" alt=""><br>P操作不可以颠倒，V操作颠倒不会出错，但临界区应该尽量小</p>
+<h3 id="经典同步问题"><a href="#经典同步问题" class="headerlink" title="经典同步问题"></a>经典同步问题</h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/27/Scala-basic-1-工程构建，基础概念，与-编程风格建建议/" rel="next" title="Scala basic(1) 工程构建，基础概念，与 编程风格建议">
+                <i class="fa fa-chevron-left"></i> Scala basic(1) 工程构建，基础概念，与 编程风格建议
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/timg.jpg"
+               alt="王套套" />
+          <p class="site-author-name" itemprop="name">王套套</p>
+           
+              <p class="site-description motion-element" itemprop="description">每个人的心底都有一座坟墓，是用来埋葬所爱的人的</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/gayTao" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/wei-ting-72?utm_source=qq&utm_medium=social" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程线程模型"><span class="nav-number">1.</span> <span class="nav-text">进程线程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">进程的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多道程序设计"><span class="nav-number">1.1.1.</span> <span class="nav-text">多道程序设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发"><span class="nav-number">1.1.2.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程（Process）"><span class="nav-number">1.1.3.</span> <span class="nav-text">进程（Process）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程控制块PCB"><span class="nav-number">1.1.4.</span> <span class="nav-text">进程控制块PCB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程状态和状态转换"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态和状态转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序的三种基本状态"><span class="nav-number">1.2.1.</span> <span class="nav-text">程序的三种基本状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程控制"><span class="nav-number">1.3.</span> <span class="nav-text">进程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-进程创建"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.进程创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-进程撤销"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.进程撤销</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-进程阻塞"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.进程阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Unix的几个进程控制操作"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.Unix的几个进程控制操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于进程的讨论"><span class="nav-number">1.4.</span> <span class="nav-text">关于进程的讨论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程分类"><span class="nav-number">1.4.1.</span> <span class="nav-text">进程分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程与程序区别"><span class="nav-number">1.4.2.</span> <span class="nav-text">进程与程序区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程映像-IMAGE-程序-数据-用户-内核-栈-PCB"><span class="nav-number">1.4.3.</span> <span class="nav-text">进程映像(IMAGE):程序+数据+(用户,内核)栈+PCB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#各进程的地址空间相互独立"><span class="nav-number">1.4.4.</span> <span class="nav-text">各进程的地址空间相互独立</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">1.5.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户级线程"><span class="nav-number">1.5.1.</span> <span class="nav-text">用户级线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心级线程"><span class="nav-number">1.5.2.</span> <span class="nav-text">核心级线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合模型"><span class="nav-number">1.5.3.</span> <span class="nav-text">混合模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步互斥机制"><span class="nav-number">2.</span> <span class="nav-text">同步互斥机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程互斥"><span class="nav-number">2.1.1.</span> <span class="nav-text">进程互斥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界资源（共享资源，互斥资源，critical-resource）"><span class="nav-number">2.1.2.</span> <span class="nav-text">临界资源（共享资源，互斥资源，critical resource）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界区（critical-section-region"><span class="nav-number">2.1.3.</span> <span class="nav-text">临界区（critical section(region)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界区的使用原则"><span class="nav-number">2.1.4.</span> <span class="nav-text">临界区的使用原则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程互斥的软件解法"><span class="nav-number">2.2.</span> <span class="nav-text">进程互斥的软件解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程互斥的硬件解法"><span class="nav-number">2.3.</span> <span class="nav-text">进程互斥的硬件解法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关中断"><span class="nav-number">2.3.1.</span> <span class="nav-text">关中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自旋锁-“测试加锁”指令TEST-AND-SET-LOCK"><span class="nav-number">2.3.2.</span> <span class="nav-text">自旋锁 “测试加锁”指令TEST AND SET LOCK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#“交换”指令-EXCHANGE"><span class="nav-number">2.3.3.</span> <span class="nav-text">“交换”指令 EXCHANGE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程同步-synchronization"><span class="nav-number">2.4.</span> <span class="nav-text">进程同步(synchronization)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信号量和PV操作"><span class="nav-number">2.5.</span> <span class="nav-text">信号量和PV操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经典同步问题"><span class="nav-number">2.6.</span> <span class="nav-text">经典同步问题</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王套套</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://github.com/gayTao/gayTao.github.io.git/2017/05/28/现代操作系统笔记/';
+          this.page.identifier = '2017/05/28/现代操作系统笔记/';
+          this.page.title = '现代操作系统笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
