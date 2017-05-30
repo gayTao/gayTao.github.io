@@ -96,12 +96,12 @@
 <meta property="og:url" content="http://github.com/gayTao/gayTao.github.io.git/2017/05/28/现代操作系统笔记/index.html">
 <meta property="og:site_name" content="桃树下的白手套">
 <meta property="og:description" content="进程线程模型进程的基本概念多道程序设计允许多个程序同时进入内存并运行，其目的是为了提高系统效率。有多个逻辑程序计数器，由于只有一个物理CPU和一个程序计数器，因此每当程序运行时，逻辑程序计数器的内容就载入程序计数器 并发一段时间间隔内，单处理器上有两个或以上的程序同时处于开始运行但尚未结束的状态 进程（Process）进程是具有独立功能的程序关于某个数据集合上的一次运行活动，是系统进行资源分配和调">
-<meta property="og:image" content="http://i.imgur.com/mJRJaOw.jpg">
-<meta property="og:updated_time" content="2017-05-29T10:38:13.112Z">
+<meta property="og:image" content="http://i.imgur.com/JkRAuQ4.jpg">
+<meta property="og:updated_time" content="2017-05-30T09:54:58.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="现代操作系统笔记">
 <meta name="twitter:description" content="进程线程模型进程的基本概念多道程序设计允许多个程序同时进入内存并运行，其目的是为了提高系统效率。有多个逻辑程序计数器，由于只有一个物理CPU和一个程序计数器，因此每当程序运行时，逻辑程序计数器的内容就载入程序计数器 并发一段时间间隔内，单处理器上有两个或以上的程序同时处于开始运行但尚未结束的状态 进程（Process）进程是具有独立功能的程序关于某个数据集合上的一次运行活动，是系统进行资源分配和调">
-<meta name="twitter:image" content="http://i.imgur.com/mJRJaOw.jpg">
+<meta name="twitter:image" content="http://i.imgur.com/JkRAuQ4.jpg">
 
 
 
@@ -424,8 +424,163 @@
 <li>在临界区前实施P（mutex）</li>
 <li>在临界区后实施V（mutex）</li>
 </ul>
-<p><img src="http://i.imgur.com/mJRJaOw.jpg" alt=""><br>P操作不可以颠倒，V操作颠倒不会出错，但临界区应该尽量小</p>
-<h3 id="经典同步问题"><a href="#经典同步问题" class="headerlink" title="经典同步问题"></a>经典同步问题</h3>
+<h3 id="经典同步问题"><a href="#经典同步问题" class="headerlink" title="经典同步问题"></a>经典同步问题</h3><h4 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a>生产者消费者问题</h4><p>一组生产者和消费者共享一个初始空，大小n的缓冲区。只有当缓冲区不满时，生产者才能放消息到缓冲区，否则必须等待。缓冲区非空时，消费者才能取出消息，否则必须等待。缓冲区是临界资源，只能一个生产者放入消息或一个消费者取出信息。</p>
+<p>分析：</p>
+<ul>
+<li>生产者和消费者对缓冲区的访问是互斥的，但是生产者生产后消费者才能消费，他们也是同步关系</li>
+<li>信号量mutex是互斥信号量，用于控制互斥访问缓冲池，初值为1；信号量full用于记录满的缓冲区数量，初值为0；信号量empty用于记录当前缓冲池中“空”缓冲区数量，初值为n</li>
+</ul>
+<p>生产者消费者进程的描述如下</p>
+<pre><code>semaphore mutex = 1;
+semaphore full = 0;
+semaphore empty = n;
+
+producer(){
+    while(1){
+    produce an item
+    P(empty)
+    P(mutex)
+    add an item to buffer
+    V(mutex)
+    V(full)
+    }
+}
+Consumer(){
+    while(1){
+    P(full)
+    P(mutex)
+    remove an item from buffer
+    V(mutex)
+    V(empty)    
+    }
+}
+</code></pre><p>上面这个问题的P操作不可以互换 V操作可以</p>
+<h4 id="读者写者问题"><a href="#读者写者问题" class="headerlink" title="读者写者问题"></a>读者写者问题</h4><p>有读者和写者两组并发进程共享一个文件，当两个或以上的读进程同时访问共享数据时不会产生副作用，但是某个写进程和其他读或者写进程同时访问共享数据会出错。</p>
+<p>分析：</p>
+<ul>
+<li>读和写互斥，写和写互斥，读和读不存在关系</li>
+<li>写进程和任何进程互斥，读进程除了和写进程互斥同时还要实现与其他读者的同步。故使用一个计数器，判断当前有没有读者读。不同读者对于计数器的访问是互斥的。</li>
+<li>信号量count为计数器，记录读者数量，初值0；信号量mutex互斥，保护更新count时的互斥；信号量rw保证读者写者互斥</li>
+</ul>
+<pre><code>int count = 0; 
+semaphore mutex = 1;
+semaphore rw = 1;
+writer(){
+    while(1){
+        P(rw);
+        Writing;
+        V(rw);
+    }
+}
+reader(){
+    while(1){
+        P(mutex);
+        if(count == 0)
+            P(rw);
+        count++;
+        V(mutex);
+        Reading;
+        P（mutex);
+        count--;
+        if(count == 0)
+            V(rw);        
+        V(mutex);
+    }
+}
+</code></pre><p>####哲学家进餐问题<br>假设有五位哲学家围坐在一张圆形餐桌旁，做以下两件事情之一：吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。餐桌中间有一大碗意大利面，每两个哲学家之间有一只餐叉。因为用一只餐叉很难吃到意大利面，所以假设哲学家必须用两只餐叉吃东西。他们只能使用自己左右手边的那两只餐叉。</p>
+<p>分析：</p>
+<ul>
+<li>当5个哲学家都想就餐时，分别都拿起左边的筷子，筷子都拿光了，等待想拿右边筷子，全部被阻塞。为了防止这种死锁，可以添加限制条件，比如最多允许4个哲学家同时就餐，只当一个哲学家左右两边筷子可才允许抓起筷子等等</li>
+</ul>
+<p>###管程（monitor，一种高级同步机制，程序设计语言的一个特殊模块）<br>它的出现是为了弥补信号量机制的不足：程序编写困难，容易出错</p>
+<ul>
+<li>由关于共享资源的数据结构及在上操作的一组过程组成</li>
+</ul>
+<p>进程只能通过调用管程中的过程间接访问管程中的数据结构</p>
+<p>作为一种同步机制，管程需要解决</p>
+<ul>
+<li>管程是互斥进入的–为了保证管程中数据结构的数据完整性。<strong>管程的互斥性是由编译器负责保证的</strong></li>
+<li>管程中设置条件变量及等待/唤醒操作以解决同步问题。可以让一个进程或线程在条件变量上等待(此时应释放管程的使用权)，也可以通过发送信号将等待在条件变量上的进程或线程唤醒</li>
+</ul>
+<h4 id="HORE管程说明"><a href="#HORE管程说明" class="headerlink" title="HORE管程说明"></a>HORE管程说明</h4><p><img src="http://i.imgur.com/JkRAuQ4.jpg" alt=""></p>
+<ul>
+<li>因为管程是互斥进入的，所以当一个进程试图进入一个已被占用的管程时，应当在管程的入口处等待—-为此，管程的入口处设置一个进程等待队列，称作<strong>入口等待队列</strong></li>
+<li>如果进程P唤醒进程Q,则P等待Q执行；如果进程Q执行中又唤醒进程R，则Q等待执行。。。如此在管程内部可能会出现多个等待进程——在管程内设置一个优先级比入口等待队列高的<strong>紧急等待队列</strong></li>
+<li>条件变量var c:condition—在管程内部说明和使用的一种特殊类型的变量。对于条件变量，可以执行wait和signal操作<br>wait(c):如果紧急等待队列非空，则唤醒第一个等待者；否则释放进程的互斥权，执行此操作的进程进入c链末尾<br>signal(c)：如果c链为空，则相当空操作，执行此操作的进程继续执行；否则唤醒第一个等待者，执行此操作的进程进入紧急等待队列的末尾</li>
+</ul>
+<h4 id="管程的应用"><a href="#管程的应用" class="headerlink" title="管程的应用"></a>管程的应用</h4><p>管程实现的两个主要途径</p>
+<ul>
+<li>直接构造 -&gt; 效率高</li>
+<li>间接构造 -&gt;用某种已经实现的同步机制实现<br>C/C++不支持管程</li>
+</ul>
+<h4 id="用管程解决生产者消费者问题"><a href="#用管程解决生产者消费者问题" class="headerlink" title="用管程解决生产者消费者问题"></a>用管程解决生产者消费者问题</h4><pre><code>monitor ProducerConsumer
+    condition full,empty;
+    integer count;
+
+    producer insert(item；interger);
+    begin 
+        if count == N then wait(full);
+        insert_item(item); count++;
+        if count == 1 then signal(empty);
+    end
+
+    function remove:integer;
+    begin 
+        if count == 0 then wait(empty)
+        remove = remove_item;count--;
+        if count == N-1 then sinal(full)
+    end
+    count:=0
+end monitor
+
+procedure producer;
+begin
+    while true do
+    begin
+        item = produce_item;
+        ProducerConsumer.insert(item)
+    end
+end;
+
+procedure consumer;
+begin 
+    while true do 
+    begin
+        item = ProducerConsumer.remove;
+        consumer_item(item);
+    end
+end
+</code></pre><h3 id="MESA管程"><a href="#MESA管程" class="headerlink" title="MESA管程"></a>MESA管程</h3><p> HOARE管程缺点:两次额外的进程切换<br>解决: sinal-&gt;notify</p>
+<ul>
+<li>notify:当一个正在管程中的进程执行notify(x)时，它使得X条件队列得到通知，发信号的进程继续执行</li>
+<li>notify的结果：位于条件队列头的进程在将来合适的时候且当处理器可用时恢复执行</li>
+<li>由于不能保证它之前没有其他进程进入管程，因此这个进程必须重新检查条件-&gt;用while循环取代if语句</li>
+<li>导致对条件变量至少多一次额外的检测，但不再有额外的进程切换，并且对等待进程在notify之后何时运行没有任何限制</li>
+</ul>
+<p>还可以将notify作以下改进</p>
+<ul>
+<li>超时检测。进程超时以后进入就绪态，用条件变量检测是否该执行</li>
+<li>broadcast：使所有在该条件上等待的进程都被释放并进入就绪队列<br>当一个进程不知道有多少进程将被激活时，这种方式很方便</li>
+</ul>
+<h4 id="MESA和HOARE管程比较"><a href="#MESA和HOARE管程比较" class="headerlink" title="MESA和HOARE管程比较"></a>MESA和HOARE管程比较</h4><p>MESA管程出错几率小</p>
+<h4 id="管程小结"><a href="#管程小结" class="headerlink" title="管程小结"></a>管程小结</h4><p>管程：抽象数据类型</p>
+<p>有一个明确定义的操作集合，通过它且只有通过它才能操纵该数据类型的实例<br>实现管程结构必须保证：</p>
+<ul>
+<li>只能通过管程的某个过程才能访问资源</li>
+<li>管程是互斥的，某个时刻只能有一个进程或线程调用管程中的过程<br>条件变量:未提供进程与其他进程通信或同步而引入<br>wait/signal或wait/notify或wait/broadcast</li>
+</ul>
+<h3 id="进程间通信机制IPC"><a href="#进程间通信机制IPC" class="headerlink" title="进程间通信机制IPC"></a>进程间通信机制IPC</h3><p>基本通信方式</p>
+<ul>
+<li>消息传递 send &amp; receive原语<br>适用于：分布式系统，基于共享内存的多处理机系统，单处理机系统，可以解决进程间的同步问题，通信问题</li>
+<li>共享内存</li>
+<li>管道通信方式pipe</li>
+</ul>
+<h3 id="典型操作系统的IPC机制"><a href="#典型操作系统的IPC机制" class="headerlink" title="典型操作系统的IPC机制"></a>典型操作系统的IPC机制</h3><p>屏障(BARRIER)</p>
+<ul>
+<li>一种同步机制，用于对一组线程进行协调</li>
+<li>应用场景：一组线程协同完成一项任务，需要所有线程到达一个汇合点后再一起向前推进。<em>比如说我们要做一个非常数量非常大的，规模非常大的一个矩阵运算。我们可能要做很多次的迭代。那么在每一次迭代的过程中，由于一个矩阵很大，我们又把这个矩阵呢，划分成了很多很多的小矩阵然后让每一个线程去完成一个小矩阵的计算。每一次迭代的话，每个小矩阵都计算完了，那么就才能进入下一次迭代。 假定有的线程运行得快一点，有的线程运行得慢一点，但是当这一次迭代，每个线程都完成了小矩阵的计算，那么这一次迭代才能算全部完成。这种情况下呢，我们就可以用这种屏障的机制，把这些线程让它们达到这个一个汇合点之后再往前走。</em></li>
+</ul>
+
       
     </div>
 
@@ -616,7 +771,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程线程模型"><span class="nav-number">1.</span> <span class="nav-text">进程线程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">进程的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多道程序设计"><span class="nav-number">1.1.1.</span> <span class="nav-text">多道程序设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发"><span class="nav-number">1.1.2.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程（Process）"><span class="nav-number">1.1.3.</span> <span class="nav-text">进程（Process）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程控制块PCB"><span class="nav-number">1.1.4.</span> <span class="nav-text">进程控制块PCB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程状态和状态转换"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态和状态转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序的三种基本状态"><span class="nav-number">1.2.1.</span> <span class="nav-text">程序的三种基本状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程控制"><span class="nav-number">1.3.</span> <span class="nav-text">进程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-进程创建"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.进程创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-进程撤销"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.进程撤销</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-进程阻塞"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.进程阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Unix的几个进程控制操作"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.Unix的几个进程控制操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于进程的讨论"><span class="nav-number">1.4.</span> <span class="nav-text">关于进程的讨论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程分类"><span class="nav-number">1.4.1.</span> <span class="nav-text">进程分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程与程序区别"><span class="nav-number">1.4.2.</span> <span class="nav-text">进程与程序区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程映像-IMAGE-程序-数据-用户-内核-栈-PCB"><span class="nav-number">1.4.3.</span> <span class="nav-text">进程映像(IMAGE):程序+数据+(用户,内核)栈+PCB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#各进程的地址空间相互独立"><span class="nav-number">1.4.4.</span> <span class="nav-text">各进程的地址空间相互独立</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">1.5.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户级线程"><span class="nav-number">1.5.1.</span> <span class="nav-text">用户级线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心级线程"><span class="nav-number">1.5.2.</span> <span class="nav-text">核心级线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合模型"><span class="nav-number">1.5.3.</span> <span class="nav-text">混合模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步互斥机制"><span class="nav-number">2.</span> <span class="nav-text">同步互斥机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程互斥"><span class="nav-number">2.1.1.</span> <span class="nav-text">进程互斥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界资源（共享资源，互斥资源，critical-resource）"><span class="nav-number">2.1.2.</span> <span class="nav-text">临界资源（共享资源，互斥资源，critical resource）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界区（critical-section-region"><span class="nav-number">2.1.3.</span> <span class="nav-text">临界区（critical section(region)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界区的使用原则"><span class="nav-number">2.1.4.</span> <span class="nav-text">临界区的使用原则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程互斥的软件解法"><span class="nav-number">2.2.</span> <span class="nav-text">进程互斥的软件解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程互斥的硬件解法"><span class="nav-number">2.3.</span> <span class="nav-text">进程互斥的硬件解法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关中断"><span class="nav-number">2.3.1.</span> <span class="nav-text">关中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自旋锁-“测试加锁”指令TEST-AND-SET-LOCK"><span class="nav-number">2.3.2.</span> <span class="nav-text">自旋锁 “测试加锁”指令TEST AND SET LOCK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#“交换”指令-EXCHANGE"><span class="nav-number">2.3.3.</span> <span class="nav-text">“交换”指令 EXCHANGE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程同步-synchronization"><span class="nav-number">2.4.</span> <span class="nav-text">进程同步(synchronization)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信号量和PV操作"><span class="nav-number">2.5.</span> <span class="nav-text">信号量和PV操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经典同步问题"><span class="nav-number">2.6.</span> <span class="nav-text">经典同步问题</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程线程模型"><span class="nav-number">1.</span> <span class="nav-text">进程线程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的基本概念"><span class="nav-number">1.1.</span> <span class="nav-text">进程的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多道程序设计"><span class="nav-number">1.1.1.</span> <span class="nav-text">多道程序设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发"><span class="nav-number">1.1.2.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程（Process）"><span class="nav-number">1.1.3.</span> <span class="nav-text">进程（Process）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程控制块PCB"><span class="nav-number">1.1.4.</span> <span class="nav-text">进程控制块PCB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程状态和状态转换"><span class="nav-number">1.2.</span> <span class="nav-text">进程状态和状态转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序的三种基本状态"><span class="nav-number">1.2.1.</span> <span class="nav-text">程序的三种基本状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程控制"><span class="nav-number">1.3.</span> <span class="nav-text">进程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-进程创建"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.进程创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-进程撤销"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.进程撤销</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-进程阻塞"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.进程阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Unix的几个进程控制操作"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.Unix的几个进程控制操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于进程的讨论"><span class="nav-number">1.4.</span> <span class="nav-text">关于进程的讨论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程分类"><span class="nav-number">1.4.1.</span> <span class="nav-text">进程分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程与程序区别"><span class="nav-number">1.4.2.</span> <span class="nav-text">进程与程序区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程映像-IMAGE-程序-数据-用户-内核-栈-PCB"><span class="nav-number">1.4.3.</span> <span class="nav-text">进程映像(IMAGE):程序+数据+(用户,内核)栈+PCB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#各进程的地址空间相互独立"><span class="nav-number">1.4.4.</span> <span class="nav-text">各进程的地址空间相互独立</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">1.5.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用户级线程"><span class="nav-number">1.5.1.</span> <span class="nav-text">用户级线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#核心级线程"><span class="nav-number">1.5.2.</span> <span class="nav-text">核心级线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合模型"><span class="nav-number">1.5.3.</span> <span class="nav-text">混合模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步互斥机制"><span class="nav-number">2.</span> <span class="nav-text">同步互斥机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程互斥"><span class="nav-number">2.1.1.</span> <span class="nav-text">进程互斥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界资源（共享资源，互斥资源，critical-resource）"><span class="nav-number">2.1.2.</span> <span class="nav-text">临界资源（共享资源，互斥资源，critical resource）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界区（critical-section-region"><span class="nav-number">2.1.3.</span> <span class="nav-text">临界区（critical section(region)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临界区的使用原则"><span class="nav-number">2.1.4.</span> <span class="nav-text">临界区的使用原则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程互斥的软件解法"><span class="nav-number">2.2.</span> <span class="nav-text">进程互斥的软件解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程互斥的硬件解法"><span class="nav-number">2.3.</span> <span class="nav-text">进程互斥的硬件解法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关中断"><span class="nav-number">2.3.1.</span> <span class="nav-text">关中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自旋锁-“测试加锁”指令TEST-AND-SET-LOCK"><span class="nav-number">2.3.2.</span> <span class="nav-text">自旋锁 “测试加锁”指令TEST AND SET LOCK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#“交换”指令-EXCHANGE"><span class="nav-number">2.3.3.</span> <span class="nav-text">“交换”指令 EXCHANGE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程同步-synchronization"><span class="nav-number">2.4.</span> <span class="nav-text">进程同步(synchronization)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信号量和PV操作"><span class="nav-number">2.5.</span> <span class="nav-text">信号量和PV操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经典同步问题"><span class="nav-number">2.6.</span> <span class="nav-text">经典同步问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生产者消费者问题"><span class="nav-number">2.6.1.</span> <span class="nav-text">生产者消费者问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读者写者问题"><span class="nav-number">2.6.2.</span> <span class="nav-text">读者写者问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HORE管程说明"><span class="nav-number">2.6.3.</span> <span class="nav-text">HORE管程说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管程的应用"><span class="nav-number">2.6.4.</span> <span class="nav-text">管程的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用管程解决生产者消费者问题"><span class="nav-number">2.6.5.</span> <span class="nav-text">用管程解决生产者消费者问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MESA管程"><span class="nav-number">2.7.</span> <span class="nav-text">MESA管程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MESA和HOARE管程比较"><span class="nav-number">2.7.1.</span> <span class="nav-text">MESA和HOARE管程比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管程小结"><span class="nav-number">2.7.2.</span> <span class="nav-text">管程小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程间通信机制IPC"><span class="nav-number">2.8.</span> <span class="nav-text">进程间通信机制IPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#典型操作系统的IPC机制"><span class="nav-number">2.9.</span> <span class="nav-text">典型操作系统的IPC机制</span></a></li></ol></li></ol></div>
             
 
           </div>
